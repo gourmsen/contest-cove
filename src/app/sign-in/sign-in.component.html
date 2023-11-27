@@ -1,0 +1,17 @@
+<h1>Contest Cove</h1>
+<h2>Sign-In</h2>
+
+<form [formGroup]="signInForm" (ngSubmit)="signIn()">
+    <label>
+        Token
+        <input type="text" formControlName="tokenId"/>
+    </label>
+    <button type="submit" [disabled]="!signInForm.valid">Sign-In</button>
+    <a href="/sign-up">
+        <button type="button">Go to Sign-Up</button>
+    </a>
+</form>
+
+@if (isUnauthorized) {
+    <p>No user found for this token...</p>
+}

@@ -1,0 +1,28 @@
+<h1>Contest Cove</h1>
+<h2>Sign-Up</h2>
+
+<form [formGroup]="signUpForm" (ngSubmit)="signUp()">
+    <label>
+        ID
+        <input type="number" formControlName="userId"/>
+    </label>
+    <label>
+        Name
+        <input type="text" formControlName="name">
+    </label>
+    <button type="submit" [disabled]="!signUpForm.valid" [disabled]="isSignedUp">Sign-Up</button>
+    <a href="/sign-in">
+        <button type="button">Go to Sign-In</button>
+    </a>
+</form>
+
+@if (isSignedUp) {
+    <p>You've successfully signed up! To sign-in use your private token:</p>
+    <h3>{{ signUpResponseBody.data.privateToken }}</h3>
+    <p>Please store this token somewhere safe since it can't be recovered!</p>
+}
+
+@if (isAlreadyExisting) {
+    <p>This user has already been signed up...</p>
+    <p>Please use a different ID or contact an administrator!</p>
+}
