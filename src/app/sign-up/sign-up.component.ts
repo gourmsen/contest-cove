@@ -13,11 +13,13 @@ import { AuthService } from '../auth.service';
 import { SignUpRequest } from '../sign-up-request';
 import { SignUpResponse } from '../sign-up-response';
 
+// bootstrap components
+import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-sign-up',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, NgbToastModule],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css'
 })

@@ -14,11 +14,13 @@ import { CookieService } from 'ngx-cookie-service';
 import { SignInRequest } from '../sign-in-request';
 import { SignInResponse } from '../sign-in-response';
 
+// bootstrap components
+import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-sign-in',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, NgbToastModule] ,
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css'
 })
@@ -29,6 +31,7 @@ export class SignInComponent {
 
   signInResponseBody: SignInResponse;
 
+  isAuthorized: boolean = false;
   isUnauthorized: boolean = false;
 
   constructor(
@@ -48,12 +51,17 @@ export class SignInComponent {
         (SignInResponse) => {
           this.signInResponseBody = SignInResponse.body!;
 
+          // print authorized
+          this.isAuthorized = true;
+          this.isUnauthorized = false;
+
           // write cookie with token
           this.cookieService.set("tokenId", this.signInResponseBody.data.tokenId, 28);
         },
         (error) => {
 
           // print unauthorized
+          this.isAuthorized = false;
           this.isUnauthorized = true;
         }
       )

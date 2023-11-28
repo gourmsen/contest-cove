@@ -5,5 +5,9 @@ $success: #8CBEB2;
 $info: #8E98A6;
 $warning: #F2EBBF;
 
+// change text colors
+$headings-color: white;
+$text-color: white;
+
 // import Bootstrap variables
 @import "node_modules/bootstrap/scss/bootstrap";
