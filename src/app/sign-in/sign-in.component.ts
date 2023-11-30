@@ -16,6 +16,7 @@ import { SignInResponse } from '../sign-in-response';
 // bootstrap components
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedDataService } from '../shared-data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-in',
@@ -31,13 +32,13 @@ export class SignInComponent {
 
   signInResponseBody: SignInResponse;
 
-  isAuthorized: boolean = false;
   isUnauthorized: boolean = false;
   isOtherError: boolean = false;
 
   constructor(
     private authService: AuthService,
-    private sharedDataService: SharedDataService
+    private sharedDataService: SharedDataService,
+    private router: Router
   ) {}
 
   signIn() {
@@ -53,23 +54,22 @@ export class SignInComponent {
           this.signInResponseBody = SignInResponse.body!;
 
           // print authorized
-          this.isAuthorized = true;
           this.isUnauthorized = false;
           this.isOtherError = false;
 
           this.sharedDataService.setCookieTokenId(this.signInForm.value.tokenId);
           this.sharedDataService.setCookieUserId(this.signInResponseBody.data.userId);
           this.sharedDataService.setCookieName(this.signInResponseBody.data.name);
+
+          this.router.navigate([""]);
         },
         (error) => {
 
           // print unauthorized
           if (error.status === 401) {
-            this.isAuthorized = false;
             this.isUnauthorized = true;
             this.isOtherError = false;
           } else {
-            this.isAuthorized = false;
             this.isUnauthorized = false;
             this.isOtherError = true;
           }

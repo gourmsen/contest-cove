@@ -16,11 +16,6 @@
             </form>
         </div>
         <div class="col">
-            @if (isAuthorized) {
-                <ngb-toast header="Authentification" [autohide]="false">
-                    Sign-in successful!
-                </ngb-toast>
-            }
             @if (isUnauthorized) {
                 <ngb-toast header="Authentification" [autohide]="false">
                     Token is invalid...
