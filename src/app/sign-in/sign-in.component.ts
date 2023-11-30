@@ -57,6 +57,8 @@ export class SignInComponent {
           this.isUnauthorized = false;
           this.isOtherError = false;
 
+          this.sharedDataService.setCookieTokenId(this.signInForm.value.tokenId);
+          this.sharedDataService.setCookieUserId(this.signInResponseBody.data.userId);
           this.sharedDataService.setCookieName(this.signInResponseBody.data.name);
         },
         (error) => {

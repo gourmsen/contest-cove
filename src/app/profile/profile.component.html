@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="row m-1">
+        <div class="col">
+            <h1>Profile</h1>
+            <hr>
+        </div>
+    </div>
+    <div class="row m-1">
+        <div class="col">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">User Information</h5>
+                    <p class="card-text">Private Token: {{ tokenId }}</p>
+                    <p class="card-text">ID: {{ userId }}</p>
+                    <p class="card-text">Name: {{ name }}</p>
+                    <br>
+                    <button type="button" class="btn btn-danger text-white" (click)="signOut()">Sign-Out</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>>
