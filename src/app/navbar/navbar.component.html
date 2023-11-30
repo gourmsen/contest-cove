@@ -16,6 +16,15 @@
 
             <!-- Right Side -->
             <ul class="navbar-nav ms-auto">
+                @if (name !== "") {
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/sign-in">{{ name }}</a>
+                    </li>
+                } @else {
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/sign-in">Sign-In</a>
+                    </li>
+                }
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/sign-in" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                         <i class="fa-solid fa-user"></i>

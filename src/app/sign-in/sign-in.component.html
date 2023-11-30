@@ -26,7 +26,11 @@
                     Token is invalid...
                 </ngb-toast>
             }
+            @if (isOtherError) {
+                <ngb-toast header="Authentification" [autohide]="false">
+                    Something has gone wrong...
+                </ngb-toast>
+            }
         </div>
     </div>
 </div>
-

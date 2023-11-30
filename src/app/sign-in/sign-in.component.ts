@@ -8,7 +8,6 @@ import { ReactiveFormsModule, Validators } from '@angular/forms';
 
 // services
 import { AuthService } from '../auth.service';
-import { CookieService } from 'ngx-cookie-service';
 
 // interfaces
 import { SignInRequest } from '../sign-in-request';
@@ -16,6 +15,7 @@ import { SignInResponse } from '../sign-in-response';
 
 // bootstrap components
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
+import { SharedDataService } from '../shared-data.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -33,10 +33,11 @@ export class SignInComponent {
 
   isAuthorized: boolean = false;
   isUnauthorized: boolean = false;
+  isOtherError: boolean = false;
 
   constructor(
     private authService: AuthService,
-    private cookieService: CookieService
+    private sharedDataService: SharedDataService
   ) {}
 
   signIn() {
@@ -54,15 +55,22 @@ export class SignInComponent {
           // print authorized
           this.isAuthorized = true;
           this.isUnauthorized = false;
+          this.isOtherError = false;
 
-          // write cookie with token
-          this.cookieService.set("tokenId", this.signInResponseBody.data.tokenId, 28);
+          this.sharedDataService.setCookieName(this.signInResponseBody.data.name);
         },
         (error) => {
 
           // print unauthorized
-          this.isAuthorized = false;
-          this.isUnauthorized = true;
+          if (error.status === 401) {
+            this.isAuthorized = false;
+            this.isUnauthorized = true;
+            this.isOtherError = false;
+          } else {
+            this.isAuthorized = false;
+            this.isUnauthorized = false;
+            this.isOtherError = true;
+          }
         }
       )
   }

@@ -33,6 +33,7 @@ export class SignUpComponent {
 
   isSignedUp: boolean = false;
   isAlreadyExisting: boolean = false;
+  isOtherError: boolean = false;
 
   constructor(private authService: AuthService) {}
 
@@ -52,12 +53,20 @@ export class SignUpComponent {
           // print successful sign-up
           this.isSignedUp = true;
           this.isAlreadyExisting = false;
+          this.isOtherError = false;
         },
         (error) => {
 
           // print already existing
-          this.isSignedUp = false;
-          this.isAlreadyExisting = true;
+          if (error.status === 409) {
+            this.isSignedUp = false;
+            this.isAlreadyExisting = true;
+            this.isOtherError = false;
+          } else {
+            this.isSignedUp = false;
+            this.isAlreadyExisting = false;
+            this.isOtherError = true;
+          }
         }
       );
   }
