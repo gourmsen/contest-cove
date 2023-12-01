@@ -10,7 +10,7 @@
             <!-- Left Side -->
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+                    <a class="btn btn-secondary text-white fw-semibold me-2" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
                 </li>
             </ul>
 
@@ -18,20 +18,16 @@
             <ul class="navbar-nav ms-auto">
                 @if (name !== "") {
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="/profile">{{ name }}</a>
+                        <a class="btn btn-secondary text-white fw-semibold me-2" routerLink="/profile" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{ name }}</a>
                     </li>
                 } @else {
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="/sign-in">Sign-In</a>
+                        <a class="btn btn-secondary text-white fw-semibold me-2" routerLink="/sign-in" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Sign-In</a>
                     </li>
                 }
                 @if (name !== "") {
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="/profile"><i class="fa-solid fa-user"></i></a>
-                    </li>
-                } @else {
-                    <li class="nav-item">
-                        <a class="nav-link" routerLink="/sign-in"><i class="fa-solid fa-key"></i></a>
+                        <a class="btn btn-danger text-white fw-semibold" (click)="signOut()"><i class="fa-solid fa-right-from-bracket"></i></a>
                     </li>
                 }
             </ul>

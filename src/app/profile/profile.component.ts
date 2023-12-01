@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedDataService } from '../shared-data.service';
+import { SignOutService } from '../sign-out.service';
 
 @Component({
   selector: 'app-profile',
@@ -14,7 +15,10 @@ export class ProfileComponent {
   userId: string;
   name: string;
 
-  constructor(private sharedDataService: SharedDataService) {}
+  constructor(
+    private sharedDataService: SharedDataService,
+    private signOutService: SignOutService
+  ) {}
 
   ngOnInit() {
     this.sharedDataService.getCookieTokenId().subscribe(tokenId => {
@@ -31,8 +35,6 @@ export class ProfileComponent {
   }
 
   signOut() {
-    this.sharedDataService.setCookieTokenId("");
-    this.sharedDataService.setCookieUserId("");
-    this.sharedDataService.setCookieName("");
+    this.signOutService.signOut();
   }
 }
