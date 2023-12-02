@@ -8,7 +8,7 @@
     <div class="row m-1">
         <div class="col">
             <form [formGroup]="signUpForm" (ngSubmit)="signUp()">
-                <input type="number" class="form-control mb-2" formControlName="userId" placeholder="User-ID"/>
+                <input type="text" class="form-control mb-2" formControlName="userId" placeholder="User-ID"/>
                 <input type="text" class="form-control mb-2" formControlName="name" placeholder="Name"/>
                 <button type="submit" class="btn btn-secondary me-2" [disabled]="!signUpForm.valid" [disabled]="isSignedUp">Sign-Up</button>
                 <a href="/sign-in">

@@ -1,0 +1,75 @@
+<div class="container">
+    <div class="row m-1">
+        <div class="col">
+            <h1>Contests</h1>
+            <hr>
+        </div>
+    </div>
+    @if (contestListResponseBody) {
+        @for (contest of contestListResponseBody.data.contests; track contest.contestId) {
+            <div class="row m-1">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h5 class="card-title">{{ contest.contestId }}
+                                            @if (contest.state === "Open") {
+                                                <span class="badge bg-success" style="text-transform:uppercase">{{ contest.state }}</span>
+                                            }
+                                            @if (contest.state === "Started") {
+                                                <span class="badge bg-info" style="text-transform:uppercase">{{ contest.state }}</span>
+                                            }
+                                            @if (contest.state === "Closed") {
+                                                <span class="badge bg-danger" style="text-transform:uppercase">{{ contest.state }}</span>
+                                            }
+                                        </h5>
+                                        @if (contest.maxRoundCount === 0) {
+                                            <p>Round {{ contest.currentRound }}</p>
+                                        } @else {
+                                            <p>Round {{ contest.currentRound }} / {{ contest.maxRoundCount }}</p>
+                                        }
+                                    </div>
+                                    <div class="col-md-4 d-flex align-items-center justify-content-end">
+                                        
+                                        <!-- View -->
+                                        <button class="btn btn-info m-1"><i class="fa-solid fa-eye"></i></button>
+                                        
+                                        <!-- Join / Leave -->
+                                        @if (contest.state === "Open") {
+                                            <button class="btn btn-success m-1"><i class="fa-solid fa-user-plus"></i></button>
+                                            <button class="btn btn-warning m-1"><i class="fa-solid fa-user-minus"></i></button>
+                                        }
+
+                                        <!-- Contest Author -->
+                                        @if (contest.authorId === userId) {
+
+                                            <!-- Start -->
+                                            @if (contest.state === "Open") {
+                                                <button class="btn btn-success m-1"><i class="fa-solid fa-play"></i></button>
+                                            }
+
+                                            <!-- Round -->
+                                            @if (contest.state === "Started") {
+                                                <button class="btn btn-success m-1"><i class="fa-solid fa-arrow-right"></i></button>
+                                            }
+
+                                            <!-- End -->
+                                            @if (contest.state !== "Closed") {
+                                                <button class="btn btn-danger m-1"><i class="fa-solid fa-flag-checkered"></i></button>
+                                            }
+
+                                            <!-- Delete -->
+                                            <button class="btn btn-danger m-1"><i class="fa-solid fa-trash"></i></button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
