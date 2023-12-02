@@ -1,0 +1,3 @@
+.card-text:not(:last-child) {
+    margin-bottom: 0; /* Adjust this value as needed */
+  }

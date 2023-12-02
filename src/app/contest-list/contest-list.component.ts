@@ -2,6 +2,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+// router
+import { RouterLink } from '@angular/router';
+
 // services
 import { ContestListService } from '../contest-list.service';
 import { SharedDataService } from '../shared-data.service';
@@ -13,7 +16,7 @@ import { ContestListResponse } from '../contest-list-response';
 @Component({
   selector: 'app-contest-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './contest-list.component.html',
   styleUrl: './contest-list.component.css'
 })
@@ -32,6 +35,11 @@ export class ContestListComponent {
       .subscribe(
         (ContestListResponse) => {
           this.contestListResponseBody = ContestListResponse.body!;
+
+          for (let i = 0; i < this.contestListResponseBody.data.contests.length; i++) {
+            this.contestListResponseBody.data.contests[i].creationDate = this.contestListResponseBody.data.contests[i].creationDate.substring(0, 10);
+          }
+
         },
         (error) => {
 

@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="row m-1">
+        <div class="col">
+            <h1>{{ contestId }}
+                @if (contestDetailResponseBody) {
+                    @if (contestDetailResponseBody.data.state === "Open") {
+                        <span class="badge bg-success" style="text-transform:uppercase">{{ contestDetailResponseBody.data.state }}</span>
+                    }
+                    @if (contestDetailResponseBody.data.state === "Started") {
+                        <span class="badge bg-info" style="text-transform:uppercase">{{ contestDetailResponseBody.data.state }}</span>
+                    }
+                    @if (contestDetailResponseBody.data.state === "Closed") {
+                        <span class="badge bg-danger" style="text-transform:uppercase">{{ contestDetailResponseBody.data.state }}</span>
+                    }
+                }
+            </h1>
+            <hr>
+        </div>
+    </div>
+</div>
+
