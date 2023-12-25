@@ -6,7 +6,7 @@
         </div>
     </div>
     @if (contestListResponseBody) {
-        @for (contest of contestListResponseBody.data.contests; track contest.contestId) {
+        <div *ngFor="let contest of contestListResponseBody.data.contests; let i = index">
             <div class="row m-1">
                 <div class="col">
                     <div class="card">
@@ -37,26 +37,29 @@
                                                     @if (contest.maxRoundCount === 0) {
                                                         <p class="card-text">{{ contest.currentRound }}</p>
                                                     } @else {
-                                                        <p class="card-text">Round: {{ contest.currentRound }} / {{ contest.maxRoundCount }}</p>
+                                                        <p class="card-text">{{ contest.currentRound }} / {{ contest.maxRoundCount }}</p>
                                                     }
                                                     @if (contest.rated) {
                                                         <p class="card-text">Yes</p>
                                                     } @else {
                                                         <p class="card-text">No</p>
-                                                        }
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-4 d-flex align-items-center justify-content-end">
-                                        
+
                                         <!-- View -->
                                         <a class="btn btn-info m-1" routerLink="/contests/{{ contest.contestId }}"><i class="fa-solid fa-eye"></i></a>
 
                                         <!-- Join / Leave -->
                                         @if (contest.state === "Open") {
-                                            <button class="btn btn-success m-1"><i class="fa-solid fa-user-plus"></i></button>
-                                            <button class="btn btn-warning m-1"><i class="fa-solid fa-user-minus"></i></button>
+                                            @if (isAttendee[i]) {
+                                                <button class="btn btn-warning m-1 fw-semibold">{{ attendeeCount[i] }} <i class="fa-solid fa-user-minus"></i></button>
+                                            } @else {
+                                                <button class="btn btn-success m-1 fw-semibold">{{ attendeeCount[i] }} <i class="fa-solid fa-user-plus"></i></button>
+                                            }
                                         }
 
                                         <!-- Contest Author -->
@@ -90,6 +93,12 @@
                     </div>
                 </div>
             </div>
-        }
+        </div>
+    } @else {
+        <div class="row m-1">
+            <div class="col">
+                <p class="text-white">No contests found...</p>
+            </div>
+        </div>
     }
 </div>
