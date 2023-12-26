@@ -10,12 +10,14 @@ import { SharedDataService } from '../shared-data.service';
 import { ContestListService } from '../contest-list.service';
 import { ContestAttendeeListService } from '../contest-attendee-list.service';
 import { ContestJoinService } from '../contest-join.service';
+import { ContestLeaveService } from '../contest-leave.service';
 
 // interfaces
 import { ContestListResponse } from '../contest-list-response';
 import { ContestAttendeeListResponse } from '../contest-attendee-list-response';
 import { ContestJoinRequest } from '../contest-join-request';
 import { ContestJoinResponse } from '../contest-join-response';
+import { ContestLeaveResponse } from '../contest-leave-response';
 
 
 @Component({
@@ -29,6 +31,7 @@ export class ContestListComponent {
   contestListResponseBody: ContestListResponse;
   contestAttendeeListResponseBody: ContestAttendeeListResponse;
   contestJoinResponseBody: ContestJoinResponse;
+  contestLeaveResponseBody: ContestLeaveResponse;
 
   userId: string;
   
@@ -40,7 +43,8 @@ export class ContestListComponent {
     private sharedDataService: SharedDataService,
     private contestListService: ContestListService,
     private contestAttendeeListService: ContestAttendeeListService,
-    private contestJoinService: ContestJoinService
+    private contestJoinService: ContestJoinService,
+    private contestLeaveService: ContestLeaveService
   ) {}
 
   ngOnInit() {
@@ -105,6 +109,23 @@ export class ContestListComponent {
       },
       (error) => {
         if (error.status === 409) {}
+      });
+    
+    // refresh page
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['contests']);
+    }); 
+  }
+
+  leaveContest(contestId: string, userId: string) {
+
+    // leave contest
+    this.contestLeaveService.leaveContest(contestId, userId).subscribe(
+      (contestLeaveResponse) => {
+        this.contestLeaveResponseBody = contestLeaveResponse.body!;
+      },
+      (error) => {
+        if (error.status === 404) {}
       });
     
     // refresh page
