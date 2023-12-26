@@ -1,12 +1,13 @@
 .navbar-nav .nav-item .btn:hover {
-    background-color: #D19C56;
+    background-color: #5864A6;
 }
 
 .navbar-nav .nav-item .btn-danger {
-  background-color: #F3B562;
-  border-color: #F3B562;
+  background-color: #DA6E65;
+  border-color: #DA6E65;
 }
 
 .navbar-nav .nav-item .btn-danger:hover {
-  background-color: #DA6E65;
+  background-color: #BD6057;
+  border-color: #BD6057;
 }
