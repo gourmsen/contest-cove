@@ -3,16 +3,19 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // router
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 // services
 import { SharedDataService } from '../shared-data.service';
 import { ContestListService } from '../contest-list.service';
 import { ContestAttendeeListService } from '../contest-attendee-list.service';
+import { ContestJoinService } from '../contest-join.service';
 
 // interfaces
 import { ContestListResponse } from '../contest-list-response';
 import { ContestAttendeeListResponse } from '../contest-attendee-list-response';
+import { ContestJoinRequest } from '../contest-join-request';
+import { ContestJoinResponse } from '../contest-join-response';
 
 
 @Component({
@@ -25,6 +28,7 @@ import { ContestAttendeeListResponse } from '../contest-attendee-list-response';
 export class ContestListComponent {
   contestListResponseBody: ContestListResponse;
   contestAttendeeListResponseBody: ContestAttendeeListResponse;
+  contestJoinResponseBody: ContestJoinResponse;
 
   userId: string;
   
@@ -32,9 +36,11 @@ export class ContestListComponent {
   isAttendee: boolean[] = [];
 
   constructor(
+    private router: Router,
     private sharedDataService: SharedDataService,
     private contestListService: ContestListService,
-    private contestAttendeeListService: ContestAttendeeListService
+    private contestAttendeeListService: ContestAttendeeListService,
+    private contestJoinService: ContestJoinService
   ) {}
 
   ngOnInit() {
@@ -82,5 +88,28 @@ export class ContestListComponent {
           if (error.status === 404) {}
         });
     });
+  }
+
+  joinContest(contestId: string, userId: string) {
+
+    // prepare request
+    let contestJoinRequest: ContestJoinRequest = {
+      contestId: contestId,
+      userId: userId,
+    }
+
+    // join contest
+    this.contestJoinService.joinContest(contestJoinRequest).subscribe(
+      (contestJoinResponse) => {
+        this.contestJoinResponseBody = contestJoinResponse.body!;
+      },
+      (error) => {
+        if (error.status === 409) {}
+      });
+    
+    // refresh page
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['contests']);
+    }); 
   }
 }

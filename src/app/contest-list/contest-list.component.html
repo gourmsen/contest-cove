@@ -58,7 +58,7 @@
                                             @if (isAttendee[i]) {
                                                 <button class="btn btn-danger m-1 fw-semibold text-white">{{ attendeeCount[i] }} <i class="fa-solid fa-user-minus"></i></button>
                                             } @else {
-                                                <button class="btn btn-success m-1 fw-semibold text-white">{{ attendeeCount[i] }} <i class="fa-solid fa-user-plus"></i></button>
+                                                <button class="btn btn-success m-1 fw-semibold text-white" (click)="joinContest(contest.contestId, userId)">{{ attendeeCount[i] }} <i class="fa-solid fa-user-plus"></i></button>
                                             }
                                         }
 
