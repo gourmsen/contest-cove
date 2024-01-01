@@ -1,21 +1,49 @@
 <div class="container">
     <div class="row m-1">
         <div class="col">
-            <h1>{{ contestId }}
-                @if (contestDetailResponseBody) {
-                    @if (contestDetailResponseBody.data.state === "Open") {
-                        <span class="badge bg-success" style="text-transform:uppercase">{{ contestDetailResponseBody.data.state }}</span>
-                    }
-                    @if (contestDetailResponseBody.data.state === "Started") {
-                        <span class="badge bg-info" style="text-transform:uppercase">{{ contestDetailResponseBody.data.state }}</span>
-                    }
-                    @if (contestDetailResponseBody.data.state === "Closed") {
-                        <span class="badge bg-danger" style="text-transform:uppercase">{{ contestDetailResponseBody.data.state }}</span>
-                    }
-                }
-            </h1>
+            <h1>{{ contestId }}</h1>
             <hr>
         </div>
     </div>
+    <div class="row m-1">
+        @if (contestAttendeeListResponseBody) {
+            <div class="col" *ngFor="let round of contestAttendeeListResponseBody.data.attendees[0].places; let i = index">
+                <div class="card bg-secondary text-white">
+                    <div class="card-body">
+                        @if (i) {
+                            <h5 class="card-title text-center">Round {{ i }}</h5>
+                        } @else {
+                            <h5 class="card-title text-center">Overall</h5>
+                        }
+                        <hr>
+                        <div class="container">
+                            <div class="row" *ngFor="let contestAttendee of sortedAttendees[i]; let j = index">
+                                <div class="col-2">
+                                    @if (sortedAttendees[i][j].places[i] === 1) {
+                                        <p class="card-text">🥇</p>
+                                    }
+                                    @if (sortedAttendees[i][j].places[i] === 2) {
+                                        <p class="card-text">🥈</p>
+                                    }
+                                    @if (sortedAttendees[i][j].places[i] === 3) {
+                                        <p class="card-text">🥉</p>
+                                    }
+                                </div>
+                                <div class="col-7">
+                                    @if (sortedAttendees[i][j].name) {
+                                        <p class="card-text">{{ sortedAttendees[i][j].name }}</p>
+                                    } @else {
+                                        <p class="card-text">{{ sortedAttendees[i][j].attendeeId }}</p>
+                                    }
+                                </div>
+                                <div class="col-3">
+                                    <p class="card-text text-end fw-semibold">{{ sortedAttendees[i][j].points[i] }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
-

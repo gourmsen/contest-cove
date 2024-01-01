@@ -94,12 +94,12 @@ export class ContestListComponent {
     });
   }
 
-  joinContest(contestId: string, userId: string) {
+  joinContest(contestId: string, attendeeId: string) {
 
     // prepare request
     let contestJoinRequest: ContestJoinRequest = {
       contestId: contestId,
-      userId: userId,
+      attendeeId: attendeeId,
     }
 
     // join contest
@@ -117,10 +117,10 @@ export class ContestListComponent {
     }); 
   }
 
-  leaveContest(contestId: string, userId: string) {
+  leaveContest(contestId: string, attendeeId: string) {
 
     // leave contest
-    this.contestLeaveService.leaveContest(contestId, userId).subscribe(
+    this.contestLeaveService.leaveContest(contestId, attendeeId).subscribe(
       (contestLeaveResponse) => {
         this.contestLeaveResponseBody = contestLeaveResponse.body!;
       },
