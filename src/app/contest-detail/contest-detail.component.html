@@ -5,9 +5,9 @@
             <hr>
         </div>
     </div>
-    <div class="row m-1">
+    <div class="row mt-1 ms-1 me-1">
         @if (contestAttendeeListResponseBody) {
-            <div class="col" *ngFor="let round of contestAttendeeListResponseBody.data.attendees[0].places; let i = index">
+            <div class="col mb-3" *ngFor="let round of contestAttendeeListResponseBody.data.attendees[0].places; let i = index">
                 <div class="card bg-secondary text-white">
                     <div class="card-body">
                         @if (i) {
@@ -45,5 +45,52 @@
                 </div>
             </div>
         }
+    </div>
+    <div class="row mt-1 ms-1 me-1">
+        @if (contestObjectiveListResponseBody) {
+            <div class="col-6">
+                <div class="card bg-secondary text-white">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Logging</h5>
+                        <hr>
+                        <div class="container">
+                            <div class="row mb-1" *ngFor="let objective of contestObjectiveListResponseBody.data.objectives; let i = index">
+                                <div class="col-3 d-flex justify-content-center align-items-center">
+                                    <span class="fw-semibold text-white">{{ objective.name }}</span>
+                                </div>
+                                <div class="btn-group col-5">
+                                    <a class="btn btn-danger text-white" (click)="entryLess(i)"><i class="fa-solid fa-minus"></i></a>
+                                    <a class="btn btn-secondary disabled text-white fw-semibold">{{ entryValues[i] }}</a>
+                                    <a class="btn btn-success text-white" (click)="entryMore(i)"><i class="fa-solid fa-plus"></i></a>
+                                </div>
+                                <div class="col-2 d-flex justify-content-center align-items-center">
+                                    <span class="fw-semibold text-white">x {{ objective.value }}</span>
+                                </div>
+                                <div class="col-2 d-flex justify-content-center align-items-center">
+                                    <span class="fw-semibold text-white">{{ entryValues[i] * objective.value }}</span>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <button class="btn btn-info text-white" [disabled]="!overallEntrySum" (click)="logEntry()">Submit <span class="badge">{{ overallEntrySum }}</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="col-6">
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Live Feed
+                        @if (isSocketConnected) {
+                            <i class="fa-solid fa-wifi text-success"></i>
+                        } @else {
+                            <i class="fa-regular fa-circle-xmark text-danger"></i>
+                        }
+                    </h5>
+                    <hr>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
