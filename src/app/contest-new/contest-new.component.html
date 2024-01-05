@@ -1,0 +1,97 @@
+<div class="container">
+    <div class="row m-1">
+        <div class="col">
+            <h1>Create Contest</h1>
+            <hr>
+        </div>
+    </div>
+    <div class="row m-1">
+        <div class="col-6">
+            <div class="card bg-secondary text-white first-row-height">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Options</h5>
+                    <hr>
+                    <div class="container">
+                        <div class="row mb-3">
+                            <div class="col-3 d-flex justify-content-center align-items-center">
+                                <span class="fw-semibold text-white">Max Rounds</span>
+                            </div>
+                            <div class="col-4"></div>
+                            <div class="btn-group col-5">
+                                <a class="btn btn-danger text-white" (click)="maxRoundLess()"><i class="fa-solid fa-minus"></i></a>
+                                <a class="btn btn-secondary disabled text-white fw-semibold font-monospace">{{ maxRoundValue }}</a>
+                                <a class="btn btn-success text-white" (click)="maxRoundMore()"><i class="fa-solid fa-plus"></i></a>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-3 d-flex justify-content-center align-items-center">
+                                <span class="fw-semibold text-white">Rated</span>
+                            </div>
+                            <div class="col-4"></div>
+                            <div class="btn-group col-5" role="group" aria-label="rated">
+                                    <input type="radio" class="btn-check" name="rated" id="ratedTrue" autocomplete="off" [(ngModel)]="ratedValue" value="true">
+                                    <label class="btn btn-secondary" for="ratedTrue"><i class="fa-solid fa-check"></i></label>
+
+                                    <input type="radio" class="btn-check" name="rated" id="ratedFalse" autocomplete="off" [(ngModel)]="ratedValue" value="false">
+                                    <label class="btn btn-secondary" for="ratedFalse"><i class="fa-solid fa-xmark"></i></label>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-3 d-flex justify-content-center align-items-center">
+                                <span class="fw-semibold text-white">Type</span>
+                            </div>
+                            <div class="col-4"></div>
+                            <div class="col-5">
+                                <input type="text" class="form-control bg-secondary text-white" id="type" [(ngModel)]="typeValue">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card bg-secondary text-white first-row-height">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Objectives</h5>
+                    <hr>
+                    <div class="container">
+                        <div class="row mb-3" *ngFor="let objective of objectives; let i = index">
+                            <div class="col-5">
+                                <input type="text" class="form-control bg-secondary text-white" id="objective{{i}}" [(ngModel)]="objectives[i].name">
+                            </div>
+                            <div class="col-1"></div>
+                            <div class="btn-group col-5">
+                                <a class="btn btn-danger text-white" (click)="objectiveLess(i)"><i class="fa-solid fa-minus"></i></a>
+                                <a class="btn btn-secondary disabled text-white fw-semibold font-monospace">{{ objectives[i].value }}</a>
+                                <a class="btn btn-success text-white" (click)="objectiveMore(i)"><i class="fa-solid fa-plus"></i></a>
+                            </div>
+                            <div class="col-1">
+                                <a class="btn btn-secondary" (click)="removeObjective(i)"><i class="fa-solid fa-xmark"></i></a>
+                            </div>
+                        </div>
+                        
+                        @if (objectives.length < 5) {
+                            <div class="row mb-3">
+                                <a class="btn btn-secondary" (click)="addObjective()"><i class="fa-solid fa-plus"></i></a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3 mb-3">
+        <div class="col d-flex justify-content-center align-items-center">
+            <a class="btn btn-secondary fw-semibold" (click)="createContest()">Create Contest</a>
+        </div>
+    </div>
+    @if (contestNewResponseBody) {
+        <div class="row mt-3">
+            <div class="col d-flex justify-content-center align-items-center">
+                <div class="alert alert-success" role="alert">
+                    <span><i class="fa-solid fa-check"></i> Contest {{contestNewResponseBody.data.contest.contestId}} has been created</span>
+                </div>
+            </div>
+        </div>
+    }
+</div>

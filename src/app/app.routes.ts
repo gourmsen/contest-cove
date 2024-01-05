@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 
 // components
 import { HomeComponent } from './home/home.component';
+import { ContestNewComponent } from './contest-new/contest-new.component';
 import { ContestListComponent } from './contest-list/contest-list.component';
 import { ContestDetailComponent } from './contest-detail/contest-detail.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -23,6 +24,12 @@ export const routes: Routes = [
         title: 'Contests | Contest Cove',
         path: 'contests',
         component: ContestListComponent,
+        canActivate: [authGuard]
+    },
+    {
+        title: 'Create Contest | Contest Cove',
+        path: 'contests/create',
+        component: ContestNewComponent,
         canActivate: [authGuard]
     },
     {
