@@ -37,7 +37,7 @@
                                     }
                                 </div>
                                 <div class="col-3">
-                                    <p class="card-text text-end fw-semibold">{{ sortedAttendees[i][j].points[i] }}</p>
+                                    <p class="card-text text-end fw-semibold font-monospace">{{ sortedAttendees[i][j].points[i] }}</p>
                                 </div>
                             </div>
                         </div>
@@ -49,7 +49,7 @@
     <div class="row mt-1 ms-1 me-1">
         @if (contestObjectiveListResponseBody) {
             <div class="col-6">
-                <div class="card bg-secondary text-white">
+                <div class="card bg-secondary text-white second-row-height">
                     <div class="card-body">
                         <h5 class="card-title text-center">Logging</h5>
                         <hr>
@@ -58,16 +58,24 @@
                                 <div class="col-3 d-flex justify-content-center align-items-center">
                                     <span class="fw-semibold text-white">{{ objective.name }}</span>
                                 </div>
-                                <div class="btn-group col-5">
-                                    <a class="btn btn-danger text-white" (click)="entryLess(i)"><i class="fa-solid fa-minus"></i></a>
-                                    <a class="btn btn-secondary disabled text-white fw-semibold">{{ entryValues[i] }}</a>
-                                    <a class="btn btn-success text-white" (click)="entryMore(i)"><i class="fa-solid fa-plus"></i></a>
+                                @if (contestDetailResponseBody.data.state === "Started") {
+                                    <div class="btn-group col-5">
+                                        <a class="btn btn-danger text-white" (click)="entryLess(i)"><i class="fa-solid fa-minus"></i></a>
+                                        <a class="btn btn-secondary disabled text-white fw-semibold font-monospace">{{ entryValues[i] }}</a>
+                                        <a class="btn btn-success text-white" (click)="entryMore(i)"><i class="fa-solid fa-plus"></i></a>
+                                    </div>
+                                } @else {
+                                    <div class="btn-group col-5">
+                                        <a class="btn btn-danger text-white disabled"><i class="fa-solid fa-minus"></i></a>
+                                        <a class="btn btn-secondary disabled text-white fw-semibold font-monospace">{{ entryValues[i] }}</a>
+                                        <a class="btn btn-success text-white disabled"><i class="fa-solid fa-plus"></i></a>
+                                    </div>
+                                }
+                                <div class="col-2 d-flex justify-content-center align-items-center">
+                                    <span class="fw-semibold text-white font-monospace">x {{ objective.value }}</span>
                                 </div>
                                 <div class="col-2 d-flex justify-content-center align-items-center">
-                                    <span class="fw-semibold text-white">x {{ objective.value }}</span>
-                                </div>
-                                <div class="col-2 d-flex justify-content-center align-items-center">
-                                    <span class="fw-semibold text-white">{{ entryValues[i] * objective.value }}</span>
+                                    <span class="fw-semibold text-white font-monospace">{{ entryValues[i] * objective.value }}</span>
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -79,16 +87,44 @@
             </div>
         }
         <div class="col-6">
-            <div class="card bg-secondary text-white">
+            <div class="card bg-secondary text-white second-row-height">
                 <div class="card-body">
-                    <h5 class="card-title text-center">Live Feed
-                        @if (isSocketConnected) {
-                            <i class="fa-solid fa-wifi text-success"></i>
-                        } @else {
-                            <i class="fa-regular fa-circle-xmark text-danger"></i>
-                        }
-                    </h5>
+                    <h5 class="card-title text-center">Live Feed</h5>
                     <hr>
+                    @if (contestAttendeeEntryListResponseBody) {
+                        <div class="container">
+                            <div class="row mb-3">
+                                <div class="col-3">
+                                    <span class="fw-bold text-white">Name</span>
+                                </div>
+                                <div class="col-1 d-flex justify-content-center align-items-center">
+                                    <span class="fw-bold text-white">Time</span>
+                                </div>
+                                <div class="col-1 d-flex justify-content-center align-items-center">
+                                    <span class="fw-bold text-white"><i class="fa-regular fa-circle"></i></span>
+                                </div>
+                                <div class="col d-flex justify-content-center align-items-center" *ngFor="let objective of contestAttendeeEntryListResponseBody.data.entries[0].values; let i = index">
+                                    <span class="fw-bold text-white">{{ objective.name }}</span>
+                                </div>
+                            </div>
+                            <div *ngFor="let entry of contestAttendeeEntryListResponseBody.data.entries; let i = index">
+                                <div class="row mb-2" *ngIf="i<7">
+                                    <div class="col-3">
+                                        <span class="text-white">{{ entry.attendeeName }} </span>
+                                    </div>
+                                    <div class="col-1 d-flex justify-content-center align-items-center">
+                                        <span class="text-white font-monospace">{{ entry.modtime }} </span>
+                                    </div>
+                                    <div class="col-1 d-flex justify-content-center align-items-center">
+                                        <span class="text-white font-monospace">{{ entry.round }} </span>
+                                    </div>
+                                    <div class="col d-flex justify-content-center align-items-center" *ngFor="let objective of contestAttendeeEntryListResponseBody.data.entries[i].values; let j = index">
+                                        <span class="text-white font-monospace">{{ objective.value }} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

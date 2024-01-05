@@ -12,6 +12,7 @@ import { ContestDetailService } from '../contest-detail.service';
 import { ContestAttendeeListService } from '../contest-attendee-list.service';
 import { ContestObjectiveListService } from '../contest-objective-list.service';
 import { ContestAttendeeEntryNewService } from '../contest-attendee-entry-new.service';
+import { ContestAttendeeEntryListService } from '../contest-attendee-entry-list.service';
 
 // interfaces
 import { ContestDetailResponse } from '../contest-detail-response';
@@ -19,6 +20,7 @@ import { ContestAttendeeListResponse } from '../contest-attendee-list-response';
 import { ContestObjectiveListResponse } from '../contest-objective-list-response';
 import { ContestAttendeeEntryNewRequest } from '../contest-attendee-entry-new-request';
 import { ContestAttendeeEntryNewResponse } from '../contest-attendee-entry-new-response';
+import { ContestAttendeeEntryListResponse } from '../contest-attendee-entry-list-response';
 
 @Component({
   selector: 'app-contest-detail',
@@ -32,6 +34,7 @@ export class ContestDetailComponent {
   contestAttendeeListResponseBody: ContestAttendeeListResponse;
   contestObjectiveListResponseBody: ContestObjectiveListResponse;
   contestAttendeeEntryNewResponseBody: ContestAttendeeEntryNewResponse;
+  contestAttendeeEntryListResponseBody: ContestAttendeeEntryListResponse;
 
   contestId: string;
   userId: string;
@@ -50,7 +53,8 @@ export class ContestDetailComponent {
     private contestDetailService: ContestDetailService,
     private contestAttendeeListService: ContestAttendeeListService,
     private contestObjectiveListService: ContestObjectiveListService,
-    private contestAttendeeEntryNewService: ContestAttendeeEntryNewService
+    private contestAttendeeEntryNewService: ContestAttendeeEntryNewService,
+    private contestAttendeeEntryListService: ContestAttendeeEntryListService
   ) {}
 
   ngOnInit() {
@@ -63,6 +67,31 @@ export class ContestDetailComponent {
 
         if (parsedMessage.event === "socket-connect") {
           this.isSocketConnected = true;
+        }
+
+        if (parsedMessage.event === "contest-attendee-entry-new") {
+
+          // get contest attendee entries
+          this.contestAttendeeEntryListService.listContestAttendeeEntries(this.contestId).subscribe(
+            (contestAttendeeEntryListResponse) => {
+              this.contestAttendeeEntryListResponseBody = contestAttendeeEntryListResponse.body!;
+            },
+            (error) => {
+              if (error.status === 404) {}
+            }
+          );
+
+          // get attendee list
+          this.contestAttendeeListService.listContestAttendees(this.contestId).subscribe(
+            (contestAttendeeListResponse) => {
+              this.contestAttendeeListResponseBody = contestAttendeeListResponse.body!;
+
+              this.sortContestAttendees(this.contestAttendeeListResponseBody.data.attendees, this.contestDetailResponseBody.data.currentRound);
+            },
+            (error) => {
+              if (error.status === 404) {}
+            }
+          );
         }
       },
       (error) => {},
@@ -90,7 +119,7 @@ export class ContestDetailComponent {
             (error) => {
               if (error.status === 404) {}
             }
-          )
+          );
         },
         (error) => {
           if (error.status === 404) {}
@@ -112,9 +141,22 @@ export class ContestDetailComponent {
         if (error.status === 404) {}
       }
     );
+
+    // get contest attendee entries
+    this.contestAttendeeEntryListService.listContestAttendeeEntries(this.contestId).subscribe(
+      (contestAttendeeEntryListResponse) => {
+        this.contestAttendeeEntryListResponseBody = contestAttendeeEntryListResponse.body!;
+      },
+      (error) => {
+        if (error.status === 404) {}
+      }
+    );
   }
 
   sortContestAttendees(attendees: any[], maxRound: number) {
+
+    // initialize array
+    this.sortedAttendees = [];
 
     // sort array for each round
     for (let i = 0; i < maxRound + 1; i++) {
@@ -169,6 +211,13 @@ export class ContestDetailComponent {
         if (error.status === 404) {}
       }
     );
+
+    // empty values
+    for (let i = 0; i < this.entryValues.length; i++) {
+      this.entryValues[i] = 0;
+    }
+
+    this.overallEntrySum = 0;
   }
 }
 

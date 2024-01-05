@@ -1,0 +1,4 @@
+.second-row-height {
+    height: 360px; /* Set the desired height */
+    overflow: hidden; /* Optional: Hide overflow content if it exceeds the fixed height */
+  }
