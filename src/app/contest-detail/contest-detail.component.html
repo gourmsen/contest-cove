@@ -44,8 +44,18 @@
                     </div>
                 </div>
             </div>
+        } @else {
+            <div class="col mb-3">
+                <div class="card bg-secondary text-white">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">No attendees, yet!</h5>
+                    </div>
+                </div>
+            </div>
         }
     </div>
+
+    <!-- Logging -->
     <div class="row mt-1 ms-1 me-1">
         @if (contestObjectiveListResponseBody) {
             <div class="col-6">
@@ -86,6 +96,8 @@
                 </div>
             </div>
         }
+
+        <!-- Live Feed-->
         <div class="col-6">
             <div class="card bg-secondary text-white second-row-height">
                 <div class="card-body">
@@ -123,6 +135,10 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    } @else {
+                        <div class="d-flex justify-content-center align-items-center">
+                            <span class="text-white">No entries, yet!</span>
                         </div>
                     }
                 </div>

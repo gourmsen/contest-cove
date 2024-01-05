@@ -71,17 +71,17 @@
 
                                             <!-- Start -->
                                             @if (contest.state === "Open") {
-                                                <button class="btn btn-success m-1 text-white"><i class="fa-solid fa-play"></i></button>
+                                                <button class="btn btn-success m-1 text-white" (click)="startContest(contest.contestId)"><i class="fa-solid fa-play"></i></button>
                                             }
 
                                             <!-- Round -->
                                             @if (contest.state === "Started") {
-                                                <button class="btn btn-success m-1 text-white"><i class="fa-solid fa-arrow-right"></i></button>
+                                                <button class="btn btn-success m-1 text-white" (click)="nextRound(contest.contestId)"><i class="fa-solid fa-arrow-right"></i></button>
                                             }
 
                                             <!-- End -->
                                             @if (contest.state !== "Open" && contest.state !== "Closed") {
-                                                <button class="btn btn-danger m-1 text-white"><i class="fa-solid fa-flag-checkered"></i></button>
+                                                <button class="btn btn-danger m-1 text-white" (click)="closeContest(contest.contestId)"><i class="fa-solid fa-flag-checkered"></i></button>
                                             }
 
                                             <!-- Delete -->
