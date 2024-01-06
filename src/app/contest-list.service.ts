@@ -1,6 +1,9 @@
 // basic service
 import { Injectable } from '@angular/core';
 
+// environment
+import { environment } from '../environments/environment';
+
 // http
 import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
@@ -22,7 +25,7 @@ export class ContestListService {
   ) {}
 
   listContests(): Observable<HttpResponse<ContestListResponse>> {
-    return this.http.get<ContestListResponse>("http://localhost:3000/contest-list/", { observe: "response"})
+    return this.http.get<ContestListResponse>(environment.manager + "/contest-list/", { observe: "response"})
       .pipe(
         catchError((error: HttpErrorResponse) =>
           this.errorHandlerService.handleHttpError(error)

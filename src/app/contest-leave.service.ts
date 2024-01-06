@@ -1,6 +1,9 @@
 // basic service
 import { Injectable } from '@angular/core';
 
+// environment
+import { environment } from '../environments/environment';
+
 // http
 import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
@@ -22,7 +25,7 @@ export class ContestLeaveService {
   ) {}
 
   leaveContest(contestId: string, userId: string): Observable<HttpResponse<ContestLeaveResponse>> {
-    return this.http.delete<ContestLeaveResponse>("http://localhost:3000/contest-leave/" + contestId + "/" + userId, { observe: "response"})
+    return this.http.delete<ContestLeaveResponse>(environment.manager + "/contest-leave/" + contestId + "/" + userId, { observe: "response"})
       .pipe(
         catchError((error: HttpErrorResponse) =>
           this.errorHandlerService.handleHttpError(error)
