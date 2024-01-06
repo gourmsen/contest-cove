@@ -1,3 +1,8 @@
 .card-text:not(:last-child) {
-    margin-bottom: 0; /* Adjust this value as needed */
-  }
+    margin-bottom: 0;
+}
+
+.card-height {
+  height: 75px;
+  overflow: hidden;
+}

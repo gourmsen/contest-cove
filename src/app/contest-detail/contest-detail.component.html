@@ -34,7 +34,7 @@
                                         @if (sortedAttendees[i][j].name) {
                                             <p class="card-text">{{ sortedAttendees[i][j].name }}</p>
                                         } @else {
-                                            <p class="card-text">{{ sortedAttendees[i][j].attendeeId }}</p>
+                                            <p class="card-text fst-italic">Unknown</p>
                                         }
                                     </div>
                                     <div class="col-3">
@@ -153,16 +153,20 @@
                                 <div *ngFor="let entry of contestAttendeeEntryListResponseBody.data.entries; let i = index">
                                     <div class="row mb-2" *ngIf="i<7">
                                         <div class="col-3">
-                                            <span class="text-white">{{ entry.attendeeName }} </span>
+                                            @if (entry.attendeeName) {
+                                                <span class="text-white">{{ entry.attendeeName }}</span>
+                                            } @else {
+                                                <span class="text-white fst-italic">Unknown</span>
+                                            }
                                         </div>
                                         <div class="col-1 d-flex justify-content-center align-items-center">
-                                            <span class="text-white font-monospace">{{ entry.modtime }} </span>
+                                            <span class="text-white font-monospace">{{ entry.modtime }}</span>
                                         </div>
                                         <div class="col-1 d-flex justify-content-center align-items-center">
-                                            <span class="text-white font-monospace">{{ entry.round }} </span>
+                                            <span class="text-white font-monospace">{{ entry.round }}</span>
                                         </div>
                                         <div class="col d-flex justify-content-center align-items-center" *ngFor="let objective of contestAttendeeEntryListResponseBody.data.entries[i].values; let j = index">
-                                            <span class="text-white font-monospace">{{ objective.value }} </span>
+                                            <span class="text-white font-monospace">{{ objective.value }}</span>
                                         </div>
                                     </div>
                                 </div>
