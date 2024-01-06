@@ -36,6 +36,10 @@ export class ContestDetailComponent {
   contestAttendeeEntryNewResponseBody: ContestAttendeeEntryNewResponse;
   contestAttendeeEntryListResponseBody: ContestAttendeeEntryListResponse;
 
+  loadingAttendees: boolean;
+  loadingObjectives: boolean;
+  loadingEntries: boolean;
+
   contestId: string;
   userId: string;
 
@@ -60,6 +64,10 @@ export class ContestDetailComponent {
   ngOnInit() {
     this.contestId = this.route.snapshot.paramMap.get("contestId") || "";
 
+    this.loadingAttendees = true;
+    this.loadingObjectives = true;
+    this.loadingEntries = true;
+
     // connect to web-socket
     this.socketService.connect().subscribe(
       (message) => {
@@ -72,24 +80,34 @@ export class ContestDetailComponent {
         if (parsedMessage.event === "contest-attendee-entry-new") {
 
           // get contest attendee entries
+          this.loadingEntries = true;
           this.contestAttendeeEntryListService.listContestAttendeeEntries(this.contestId).subscribe(
             (contestAttendeeEntryListResponse) => {
               this.contestAttendeeEntryListResponseBody = contestAttendeeEntryListResponse.body!;
+
+              this.loadingEntries = false;
             },
             (error) => {
               if (error.status === 404) {}
+
+              this.loadingEntries = false;
             }
           );
 
           // get attendee list
+          this.loadingAttendees = true;
           this.contestAttendeeListService.listContestAttendees(this.contestId).subscribe(
             (contestAttendeeListResponse) => {
               this.contestAttendeeListResponseBody = contestAttendeeListResponse.body!;
 
               this.sortContestAttendees(this.contestAttendeeListResponseBody.data.attendees, this.contestDetailResponseBody.data.currentRound);
+
+              this.loadingAttendees = false;
             },
             (error) => {
               if (error.status === 404) {}
+
+              this.loadingAttendees = false;
             }
           );
         }
@@ -114,10 +132,14 @@ export class ContestDetailComponent {
             (contestAttendeeListResponse) => {
               this.contestAttendeeListResponseBody = contestAttendeeListResponse.body!;
 
-              this.sortContestAttendees(this.contestAttendeeListResponseBody.data.attendees, this.contestDetailResponseBody.data.currentRound)
+              this.sortContestAttendees(this.contestAttendeeListResponseBody.data.attendees, this.contestDetailResponseBody.data.currentRound);
+
+              this.loadingAttendees = false;
             },
             (error) => {
               if (error.status === 404) {}
+
+              this.loadingAttendees = false;
             }
           );
         },
@@ -136,9 +158,13 @@ export class ContestDetailComponent {
         if (!this.entryValues.length) {
           this.entryValues = Array(this.contestObjectiveListResponseBody.data.objectives.length).fill(0);
         }
+
+        this.loadingObjectives = false;
       },
       (error) => {
         if (error.status === 404) {}
+
+        this.loadingObjectives = false;
       }
     );
 
@@ -146,9 +172,13 @@ export class ContestDetailComponent {
     this.contestAttendeeEntryListService.listContestAttendeeEntries(this.contestId).subscribe(
       (contestAttendeeEntryListResponse) => {
         this.contestAttendeeEntryListResponseBody = contestAttendeeEntryListResponse.body!;
+
+        this.loadingEntries = false;
       },
       (error) => {
         if (error.status === 404) {}
+
+        this.loadingEntries = false;
       }
     );
   }
