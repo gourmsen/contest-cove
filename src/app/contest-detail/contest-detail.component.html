@@ -104,7 +104,15 @@
                                     </div>
                                 </div>
                                 <div class="row mt-3">
-                                    <button class="btn btn-info text-white" [disabled]="!overallEntrySum" (click)="logEntry()">Submit <span class="badge">{{ overallEntrySum }}</span></button>
+                                    @if (contestDetailResponseBody.data.state === "Open") {
+                                        <button class="btn btn-warning text-white" disabled>Waiting</button>
+                                    }
+                                    @if (contestDetailResponseBody.data.state === "Started") {
+                                        <button class="btn btn-info text-white" [disabled]="!overallEntrySum" (click)="logEntry()">Submit <span class="badge">{{ overallEntrySum }}</span></button>
+                                    }
+                                    @if (contestDetailResponseBody.data.state === "Closed") {
+                                        <button class="btn btn-danger text-white" disabled>Closed</button>
+                                    }
                                 </div>
                             </div>
                         </div>
