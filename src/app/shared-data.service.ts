@@ -47,7 +47,7 @@ export class SharedDataService {
     if (value === "") {
       this.cookieService.delete(name);
     } else {
-      this.cookieService.set(name, value);
+      this.cookieService.set(name, value, 7);
     }
   }
 }
