@@ -5,69 +5,6 @@
             <hr>
         </div>
     </div>
-    <div class="row mt-1 ms-1 me-1">
-        @if (!loadingAttendees) {
-            @if (contestAttendeeListResponseBody) {
-                <div class="col mb-3" *ngFor="let round of contestAttendeeListResponseBody.data.attendees[0].places; let i = index">
-                    <div class="card bg-secondary text-white">
-                        <div class="card-body">
-                            @if (i) {
-                                <h5 class="card-title text-center">Round {{ i }}</h5>
-                            } @else {
-                                <h5 class="card-title text-center">Overall</h5>
-                            }
-                            <hr>
-                            <div class="container">
-                                <div class="row" *ngFor="let contestAttendee of sortedAttendees[i]; let j = index">
-                                    <div class="col-2">
-                                        @if (sortedAttendees[i][j].places[i] === 1) {
-                                            <p class="card-text">🥇</p>
-                                        }
-                                        @if (sortedAttendees[i][j].places[i] === 2) {
-                                            <p class="card-text">🥈</p>
-                                        }
-                                        @if (sortedAttendees[i][j].places[i] === 3) {
-                                            <p class="card-text">🥉</p>
-                                        }
-                                    </div>
-                                    <div class="col-7">
-                                        @if (sortedAttendees[i][j].name) {
-                                            <p class="card-text">{{ sortedAttendees[i][j].name }}</p>
-                                        } @else {
-                                            <p class="card-text fst-italic">Unknown</p>
-                                        }
-                                    </div>
-                                    <div class="col-3">
-                                        <p class="card-text text-end fw-semibold font-monospace">{{ sortedAttendees[i][j].points[i] }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            } @else {
-                <div class="col mb-3">
-                    <div class="card bg-secondary text-white">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">No attendees, yet!</h5>
-                        </div>
-                    </div>
-                </div>
-            }
-        } @else {
-            <div class="col mb-3">
-                <div class="card bg-secondary text-white">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Attendees
-                            <div class="spinner-grow spinner-grow-sm" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </h5>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
 
     <!-- Logging -->
     <div class="row mt-1 ms-1 me-1">
@@ -134,7 +71,6 @@
             </div>
         }
 
-
         <!-- Live Feed-->
         @if (!loadingEntries) {
             <div class="col-6">
@@ -197,6 +133,71 @@
                             </div>
                         </h5>
                         <hr>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Standings -->
+    <div class="row mt-3 ms-1 me-1">
+        @if (!loadingAttendees) {
+            @if (contestAttendeeListResponseBody) {
+                <div class="col mb-3" *ngFor="let round of contestAttendeeListResponseBody.data.attendees[0].places; let i = index">
+                    <div class="card bg-secondary text-white">
+                        <div class="card-body">
+                            @if (i) {
+                                <h5 class="card-title text-center">Round {{ i }}</h5>
+                            } @else {
+                                <h5 class="card-title text-center">Overall</h5>
+                            }
+                            <hr>
+                            <div class="container">
+                                <div class="row" *ngFor="let contestAttendee of sortedAttendees[i]; let j = index">
+                                    <div class="col-2">
+                                        @if (sortedAttendees[i][j].places[i] === 1) {
+                                            <p class="card-text">🥇</p>
+                                        }
+                                        @if (sortedAttendees[i][j].places[i] === 2) {
+                                            <p class="card-text">🥈</p>
+                                        }
+                                        @if (sortedAttendees[i][j].places[i] === 3) {
+                                            <p class="card-text">🥉</p>
+                                        }
+                                    </div>
+                                    <div class="col-7">
+                                        @if (sortedAttendees[i][j].name) {
+                                            <p class="card-text">{{ sortedAttendees[i][j].name }}</p>
+                                        } @else {
+                                            <p class="card-text fst-italic">Unknown</p>
+                                        }
+                                    </div>
+                                    <div class="col-3">
+                                        <p class="card-text text-end fw-semibold font-monospace">{{ sortedAttendees[i][j].points[i] }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            } @else {
+                <div class="col mb-3">
+                    <div class="card bg-secondary text-white">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">No attendees, yet!</h5>
+                        </div>
+                    </div>
+                </div>
+            }
+        } @else {
+            <div class="col mb-3">
+                <div class="card bg-secondary text-white">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Attendees
+                            <div class="spinner-grow spinner-grow-sm" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </h5>
                     </div>
                 </div>
             </div>
