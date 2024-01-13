@@ -12,8 +12,10 @@ import { ContestAttendeeListService } from '../contest-attendee-list.service';
 import { ContestJoinService } from '../contest-join.service';
 import { ContestLeaveService } from '../contest-leave.service';
 import { ContestUpdateService } from '../contest-update.service';
+import { ContestDeleteService } from '../contest-delete.service';
 
 // interfaces
+import { ContestSchema } from '../contest-schema';
 import { ContestListResponse } from '../contest-list-response';
 import { ContestAttendeeListResponse } from '../contest-attendee-list-response';
 import { ContestJoinRequest } from '../contest-join-request';
@@ -21,7 +23,7 @@ import { ContestJoinResponse } from '../contest-join-response';
 import { ContestLeaveResponse } from '../contest-leave-response';
 import { ContestUpdateRequest } from '../contest-update-request';
 import { ContestUpdateResponse } from '../contest-update-response';
-import { ContestSchema } from '../contest-schema';
+import { ContestDeleteResponse } from '../contest-delete-response';
 
 
 @Component({
@@ -37,6 +39,7 @@ export class ContestListComponent {
   contestJoinResponseBody: ContestJoinResponse;
   contestLeaveResponseBody: ContestLeaveResponse;
   contestUpdateResponseBody: ContestUpdateResponse;
+  contestDeleteResponseBody: ContestDeleteResponse;
 
   userId: string;
   
@@ -50,7 +53,8 @@ export class ContestListComponent {
     private contestAttendeeListService: ContestAttendeeListService,
     private contestJoinService: ContestJoinService,
     private contestLeaveService: ContestLeaveService,
-    private contestUpdateService: ContestUpdateService
+    private contestUpdateService: ContestUpdateService,
+    private contestDeleteService: ContestDeleteService
   ) {}
 
   ngOnInit() {
@@ -170,6 +174,22 @@ export class ContestListComponent {
       this.updateContest(contest);
     }
     
+    this.refreshPage();
+  }
+
+  deleteContest(contestId: string, attendeeId: string) {
+
+    // delete contest
+    this.contestDeleteService.deleteContest(contestId, attendeeId).subscribe(
+      (contestDeleteResponse) => {
+        this.contestDeleteResponseBody = contestDeleteResponse.body!;
+      },
+      (error) => {
+        if (error.status === 401) {}
+        if (error.status === 404) {}
+      }
+    );
+
     this.refreshPage();
   }
 

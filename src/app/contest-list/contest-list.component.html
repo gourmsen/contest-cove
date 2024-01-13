@@ -78,7 +78,9 @@
                                             }
 
                                             <!-- Delete -->
-                                            <button class="btn btn-danger m-1 text-white"><i class="fa-solid fa-trash"></i></button>
+                                            @if (contest.state === "Open") {
+                                                <button class="btn btn-danger m-1 text-white" (click)="deleteContest(contest.contestId, userId)"><i class="fa-solid fa-trash"></i></button>
+                                            }
                                         }
                                     </div>
                                 </div>
