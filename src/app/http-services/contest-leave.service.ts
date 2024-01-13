@@ -2,17 +2,17 @@
 import { Injectable } from '@angular/core';
 
 // environment
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 // http
 import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
 
 // services
-import { ErrorHandlerService } from './error-handler.service';
+import { ErrorHandlerService } from '../internal-services/error-handler.service';
 
 // interfaces
-import { ContestLeaveResponse } from './contest-leave-response';
+import { ContestLeaveResponse } from '../interfaces/contest-leave-response';
 
 @Injectable({
   providedIn: 'root'

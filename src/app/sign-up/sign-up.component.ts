@@ -7,11 +7,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 
 // services
-import { AuthService } from '../auth.service';
+import { AuthService } from '../http-services/auth.service';
 
 // interfaces
-import { SignUpRequest } from '../sign-up-request';
-import { SignUpResponse } from '../sign-up-response';
+import { SignUpRequest } from '../interfaces/sign-up-request';
+import { SignUpResponse } from '../interfaces/sign-up-response';
 
 // bootstrap components
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';

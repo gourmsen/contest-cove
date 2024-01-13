@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 // services
-import { SharedDataService } from '../shared-data.service';
-import { SignOutService } from '../sign-out.service';
+import { SharedDataService } from '../internal-services/shared-data.service';
+import { SignOutService } from '../internal-services/sign-out.service';
 
 @Component({
   selector: 'app-navbar',

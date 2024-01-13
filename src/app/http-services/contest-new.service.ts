@@ -2,18 +2,18 @@
 import { Injectable } from '@angular/core';
 
 // environment
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 // http
 import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError} from 'rxjs'
 
 // services
-import { ErrorHandlerService } from './error-handler.service';
+import { ErrorHandlerService } from '../internal-services/error-handler.service';
 
 // interfaces
-import { ContestNewRequest } from './contest-new-request';
-import { ContestNewResponse } from './contest-new-response';
+import { ContestNewRequest } from '../interfaces/contest-new-request';
+import { ContestNewResponse } from '../interfaces/contest-new-response';
 
 
 @Injectable({

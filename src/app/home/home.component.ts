@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // services
-import { SharedDataService } from '../shared-data.service';
+import { SharedDataService } from '../internal-services/shared-data.service';
 
 @Component({
   selector: 'app-home',

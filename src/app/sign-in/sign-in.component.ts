@@ -7,15 +7,15 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 
 // services
-import { AuthService } from '../auth.service';
+import { AuthService } from '../http-services/auth.service';
 
 // interfaces
-import { SignInRequest } from '../sign-in-request';
-import { SignInResponse } from '../sign-in-response';
+import { SignInRequest } from '../interfaces/sign-in-request';
+import { SignInResponse } from '../interfaces/sign-in-response';
 
 // bootstrap components
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
-import { SharedDataService } from '../shared-data.service';
+import { SharedDataService } from '../internal-services/shared-data.service';
 import { Router } from '@angular/router';
 
 @Component({

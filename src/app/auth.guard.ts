@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { SharedDataService } from './shared-data.service';
+import { SharedDataService } from './internal-services/shared-data.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
   let sharedDataService = inject(SharedDataService);

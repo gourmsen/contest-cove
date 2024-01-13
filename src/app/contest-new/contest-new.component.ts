@@ -6,13 +6,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // services
-import { SharedDataService } from '../shared-data.service';
-import { ContestNewService } from '../contest-new.service';
+import { SharedDataService } from '../internal-services/shared-data.service';
+import { ContestNewService } from '../http-services/contest-new.service';
 
 // interfaces
-import { ContestObjectiveSchema } from '../contest-objective-schema';
-import { ContestNewRequest } from '../contest-new-request';
-import { ContestNewResponse } from '../contest-new-response';
+import { ContestObjectiveSchema } from '../interfaces/contest-objective-schema';
+import { ContestNewRequest } from '../interfaces/contest-new-request';
+import { ContestNewResponse } from '../interfaces/contest-new-response';
 
 
 @Component({

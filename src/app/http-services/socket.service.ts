@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 
 // environment
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 // web-sockets
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';

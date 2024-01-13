@@ -2,30 +2,30 @@
 import { Injectable } from '@angular/core';
 
 // environment
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 // http
 import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
 
 // services
-import { ErrorHandlerService } from './error-handler.service';
+import { ErrorHandlerService } from '../internal-services/error-handler.service';
 
 // interfaces
-import { ContestListResponse } from './contest-list-response';
-
+import { ContestDeleteResponse } from '../interfaces/contest-delete-response';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ContestListService {
+export class ContestDeleteService {
+
   constructor(
     private http: HttpClient,
     private errorHandlerService: ErrorHandlerService
   ) {}
 
-  listContests(): Observable<HttpResponse<ContestListResponse>> {
-    return this.http.get<ContestListResponse>(environment.manager + "/contest-list/", { observe: "response"})
+  deleteContest(contestId: string, userId: string): Observable<HttpResponse<ContestDeleteResponse>> {
+    return this.http.delete<ContestDeleteResponse>(environment.manager + "/contest-delete/" + contestId + "/" + userId, { observe: "response"})
       .pipe(
         catchError((error: HttpErrorResponse) =>
           this.errorHandlerService.handleHttpError(error)

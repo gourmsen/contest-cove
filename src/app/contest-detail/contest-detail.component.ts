@@ -6,21 +6,21 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
 // services
-import { SharedDataService } from '../shared-data.service';
-import { SocketService } from '../socket.service';
-import { ContestDetailService } from '../contest-detail.service';
-import { ContestAttendeeListService } from '../contest-attendee-list.service';
-import { ContestObjectiveListService } from '../contest-objective-list.service';
-import { ContestAttendeeEntryNewService } from '../contest-attendee-entry-new.service';
-import { ContestAttendeeEntryListService } from '../contest-attendee-entry-list.service';
+import { SharedDataService } from '../internal-services/shared-data.service';
+import { SocketService } from '../http-services/socket.service';
+import { ContestDetailService } from '../http-services/contest-detail.service';
+import { ContestAttendeeListService } from '../http-services/contest-attendee-list.service';
+import { ContestObjectiveListService } from '../http-services/contest-objective-list.service';
+import { ContestAttendeeEntryNewService } from '../http-services/contest-attendee-entry-new.service';
+import { ContestAttendeeEntryListService } from '../http-services/contest-attendee-entry-list.service';
 
 // interfaces
-import { ContestDetailResponse } from '../contest-detail-response';
-import { ContestAttendeeListResponse } from '../contest-attendee-list-response';
-import { ContestObjectiveListResponse } from '../contest-objective-list-response';
-import { ContestAttendeeEntryNewRequest } from '../contest-attendee-entry-new-request';
-import { ContestAttendeeEntryNewResponse } from '../contest-attendee-entry-new-response';
-import { ContestAttendeeEntryListResponse } from '../contest-attendee-entry-list-response';
+import { ContestDetailResponse } from '../interfaces/contest-detail-response';
+import { ContestAttendeeListResponse } from '../interfaces/contest-attendee-list-response';
+import { ContestObjectiveListResponse } from '../interfaces/contest-objective-list-response';
+import { ContestAttendeeEntryNewRequest } from '../interfaces/contest-attendee-entry-new-request';
+import { ContestAttendeeEntryNewResponse } from '../interfaces/contest-attendee-entry-new-response';
+import { ContestAttendeeEntryListResponse } from '../interfaces/contest-attendee-entry-list-response';
 
 @Component({
   selector: 'app-contest-detail',

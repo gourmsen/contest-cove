@@ -2,21 +2,21 @@
 import { Injectable } from '@angular/core';
 
 // environment
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 // http
 import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError} from 'rxjs'
 
 // services
-import { ErrorHandlerService } from './error-handler.service';
+import { ErrorHandlerService } from '../internal-services/error-handler.service';
 
 // interfaces
-import { SignUpRequest } from './sign-up-request';
-import { SignUpResponse } from './sign-up-response';
+import { SignUpRequest } from '../interfaces/sign-up-request';
+import { SignUpResponse } from '../interfaces/sign-up-response';
 
-import { SignInRequest } from './sign-in-request';
-import { SignInResponse } from './sign-in-response';
+import { SignInRequest } from '../interfaces/sign-in-request';
+import { SignInResponse } from '../interfaces/sign-in-response';
 
 
 @Injectable({

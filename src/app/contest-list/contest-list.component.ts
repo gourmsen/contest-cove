@@ -6,24 +6,24 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
 // services
-import { SharedDataService } from '../shared-data.service';
-import { ContestListService } from '../contest-list.service';
-import { ContestAttendeeListService } from '../contest-attendee-list.service';
-import { ContestJoinService } from '../contest-join.service';
-import { ContestLeaveService } from '../contest-leave.service';
-import { ContestUpdateService } from '../contest-update.service';
-import { ContestDeleteService } from '../contest-delete.service';
+import { SharedDataService } from '../internal-services/shared-data.service';
+import { ContestListService } from '../http-services/contest-list.service';
+import { ContestAttendeeListService } from '../http-services/contest-attendee-list.service';
+import { ContestJoinService } from '../http-services/contest-join.service';
+import { ContestLeaveService } from '../http-services/contest-leave.service';
+import { ContestUpdateService } from '../http-services/contest-update.service';
+import { ContestDeleteService } from '../http-services/contest-delete.service';
 
 // interfaces
-import { ContestSchema } from '../contest-schema';
-import { ContestListResponse } from '../contest-list-response';
-import { ContestAttendeeListResponse } from '../contest-attendee-list-response';
-import { ContestJoinRequest } from '../contest-join-request';
-import { ContestJoinResponse } from '../contest-join-response';
-import { ContestLeaveResponse } from '../contest-leave-response';
-import { ContestUpdateRequest } from '../contest-update-request';
-import { ContestUpdateResponse } from '../contest-update-response';
-import { ContestDeleteResponse } from '../contest-delete-response';
+import { ContestSchema } from '../interfaces/contest-schema';
+import { ContestListResponse } from '../interfaces/contest-list-response';
+import { ContestAttendeeListResponse } from '../interfaces/contest-attendee-list-response';
+import { ContestJoinRequest } from '../interfaces/contest-join-request';
+import { ContestJoinResponse } from '../interfaces/contest-join-response';
+import { ContestLeaveResponse } from '../interfaces/contest-leave-response';
+import { ContestUpdateRequest } from '../interfaces/contest-update-request';
+import { ContestUpdateResponse } from '../interfaces/contest-update-response';
+import { ContestDeleteResponse } from '../interfaces/contest-delete-response';
 
 
 @Component({
