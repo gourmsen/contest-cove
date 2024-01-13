@@ -155,13 +155,13 @@
                             <div class="container">
                                 <div class="row" *ngFor="let contestAttendee of sortedAttendees[i]; let j = index">
                                     <div class="col-2">
-                                        @if (sortedAttendees[i][j].places[i] === 1) {
+                                        @if (sortedAttendees[i][j].places[i] === 1 && sortedAttendees[i][j].points[i] !== 0) {
                                             <p class="card-text">🥇</p>
                                         }
-                                        @if (sortedAttendees[i][j].places[i] === 2) {
+                                        @if (sortedAttendees[i][j].places[i] === 2 && sortedAttendees[i][j].points[i] !== 0) {
                                             <p class="card-text">🥈</p>
                                         }
-                                        @if (sortedAttendees[i][j].places[i] === 3) {
+                                        @if (sortedAttendees[i][j].places[i] === 3 && sortedAttendees[i][j].points[i] !== 0) {
                                             <p class="card-text">🥉</p>
                                         }
                                     </div>
