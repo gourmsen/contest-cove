@@ -77,7 +77,8 @@ export class ContestDetailComponent {
           this.isSocketConnected = true;
         }
 
-        if (parsedMessage.event === "contest-attendee-entry-new") {
+        if (parsedMessage.event === "contest-attendee-entry-new" ||
+            parsedMessage.event === "contest-update") {
 
           // get contest attendee entries
           this.loadingEntries = true;
@@ -94,20 +95,30 @@ export class ContestDetailComponent {
             }
           );
 
-          // get attendee list
-          this.loadingAttendees = true;
-          this.contestAttendeeListService.listContestAttendees(this.contestId).subscribe(
-            (contestAttendeeListResponse) => {
-              this.contestAttendeeListResponseBody = contestAttendeeListResponse.body!;
+          // get contest details
+          this.contestDetailService.viewContest(this.contestId).subscribe(
+            (contestDetailResponse) => {
+              this.contestDetailResponseBody = contestDetailResponse.body!;
 
-              this.sortContestAttendees(this.contestAttendeeListResponseBody.data.attendees, this.contestDetailResponseBody.data.currentRound);
+              // get attendee list
+              this.loadingAttendees = true;
+              this.contestAttendeeListService.listContestAttendees(this.contestId).subscribe(
+                (contestAttendeeListResponse) => {
+                  this.contestAttendeeListResponseBody = contestAttendeeListResponse.body!;
 
-              this.loadingAttendees = false;
+                  this.sortContestAttendees(this.contestAttendeeListResponseBody.data.attendees, this.contestDetailResponseBody.data.currentRound);
+
+                  this.loadingAttendees = false;
+                },
+                (error) => {
+                  if (error.status === 404) {}
+
+                  this.loadingAttendees = false;
+                }
+              );
             },
             (error) => {
               if (error.status === 404) {}
-
-              this.loadingAttendees = false;
             }
           );
         }
