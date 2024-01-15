@@ -13,6 +13,7 @@ import { ContestJoinService } from '../http-services/contest-join.service';
 import { ContestLeaveService } from '../http-services/contest-leave.service';
 import { ContestUpdateService } from '../http-services/contest-update.service';
 import { ContestDeleteService } from '../http-services/contest-delete.service';
+import { ContestStatisticsRefreshService } from '../http-services/contest-statistics-refresh.service';
 
 // interfaces
 import { ContestSchema } from '../interfaces/contest-schema';
@@ -24,6 +25,8 @@ import { ContestLeaveResponse } from '../interfaces/contest-leave-response';
 import { ContestUpdateRequest } from '../interfaces/contest-update-request';
 import { ContestUpdateResponse } from '../interfaces/contest-update-response';
 import { ContestDeleteResponse } from '../interfaces/contest-delete-response';
+import { ContestStatisticsRefreshRequest } from '../interfaces/contest-statistics-refresh-request';
+import { ContestStatisticsRefreshResponse } from '../interfaces/contest-statistics-refresh-response';
 
 
 @Component({
@@ -40,6 +43,7 @@ export class ContestListComponent {
   contestLeaveResponseBody: ContestLeaveResponse;
   contestUpdateResponseBody: ContestUpdateResponse;
   contestDeleteResponseBody: ContestDeleteResponse;
+  contestStatisticsRefreshResponseBody: ContestStatisticsRefreshResponse;
 
   userId: string;
   
@@ -54,7 +58,8 @@ export class ContestListComponent {
     private contestJoinService: ContestJoinService,
     private contestLeaveService: ContestLeaveService,
     private contestUpdateService: ContestUpdateService,
-    private contestDeleteService: ContestDeleteService
+    private contestDeleteService: ContestDeleteService,
+    private contestStatisticsRefreshService: ContestStatisticsRefreshService
   ) {}
 
   ngOnInit() {
@@ -214,6 +219,21 @@ export class ContestListComponent {
         this.contestUpdateResponseBody = contestUpdateResponse.body!;
       },
       (error) => {}
+    );
+  }
+
+  refreshStatistics(contestId: string) {
+    let contestStatisticsRefreshRequest: ContestStatisticsRefreshRequest = {
+      contestId: contestId
+    }
+
+    this.contestStatisticsRefreshService.refreshStatistics(contestStatisticsRefreshRequest).subscribe(
+      (contestStatisticsRefreshResponse) => {
+        this.contestStatisticsRefreshResponseBody = contestStatisticsRefreshResponse.body!;
+      },
+      (error) => {
+        if (error.status === 404) {}
+      }
     );
   }
 

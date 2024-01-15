@@ -81,6 +81,11 @@
                                             @if (contest.state === "Open") {
                                                 <button class="btn btn-danger m-1 text-white" (click)="deleteContest(contest.contestId, userId)"><i class="fa-solid fa-trash"></i></button>
                                             }
+
+                                            <!-- Statistics -->
+                                            @if (contest.state === "Closed") {
+                                                <button class="btn btn-warning m-1 text-white" (click)="refreshStatistics(contest.contestId)"><i class="fa-solid fa-chart-simple"></i></button>
+                                            }
                                         }
                                     </div>
                                 </div>
