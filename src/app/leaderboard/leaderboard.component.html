@@ -1,0 +1,148 @@
+<div class="container">
+    <div class="row m-1 mb-5">
+        <div class="col">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h3 class="card-title text-center">Leaderboard</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-1 ms-1 me-1">
+        <!-- MEDALS-->
+        <div class="col-5">
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    @if (!loadingMedals) {
+                    <h5 class="card-title text-center">Medals</h5>
+                    <div class="container">
+                        <!-- insert phantom symbol-->
+                        <div class="row">
+                            <div class="col">
+                                <p class="card-text">&#8203;</p>
+                            </div>
+                        </div>
+                        <hr />
+                        <div
+                            class="row"
+                            *ngFor="
+                                let attendee of statisticsMedals;
+                                let i = index
+                            "
+                        >
+                            @if (attendee.name) {
+                            <div class="col-2">
+                                <p
+                                    class="card-text text-end fw-semibold font-monospace"
+                                >
+                                    {{ attendee.value }}
+                                </p>
+                            </div>
+                            <div class="col-4">
+                                <p class="card-text">
+                                    {{ attendee.name }}
+                                </p>
+                            </div>
+                            <div class="col-2">
+                                <p class="card-text text-end font-monospace">
+                                    {{ attendee.medals[0] }}x🥇
+                                </p>
+                            </div>
+                            <div class="col-2">
+                                <p class="card-text text-end font-monospace">
+                                    {{ attendee.medals[1] }}x🥈
+                                </p>
+                            </div>
+                            <div class="col-2">
+                                <p class="card-text text-end font-monospace">
+                                    {{ attendee.medals[2] }}x🥉
+                                </p>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                    } @else {
+                    <h5 class="card-title text-center">
+                        Medals
+                        <div class="spinner-grow spinner-grow-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </h5>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- POINTS-->
+        <div class="col-7">
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    @if (!loadingPoints) {
+                    <h5 class="card-title text-center">Points</h5>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-4">
+                                <p class="card-text text-center fw-semibold">
+                                    Total
+                                </p>
+                            </div>
+                            <div class="col-4">
+                                <p class="card-text text-center fw-semibold">
+                                    Average
+                                </p>
+                            </div>
+                            <div class="col-4">
+                                <p class="card-text text-center fw-semibold">
+                                    Best
+                                </p>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div
+                                class="col-4"
+                                *ngFor="
+                                    let column of statisticsPoints;
+                                    let i = index
+                                "
+                            >
+                                <div class="container">
+                                    <div
+                                        class="row"
+                                        *ngFor="
+                                            let attendee of statisticsPoints[i]
+                                        "
+                                    >
+                                        @if (attendee.name) {
+                                        <div class="col-4">
+                                            <p
+                                                class="card-text text-end fw-semibold font-monospace"
+                                            >
+                                                {{ attendee.value }}
+                                            </p>
+                                        </div>
+                                        <div class="col-8">
+                                            <p class="card-text">
+                                                {{ attendee.name }}
+                                            </p>
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    } @else {
+                    <h5 class="card-title text-center">
+                        Points
+                        <div class="spinner-grow spinner-grow-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </h5>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

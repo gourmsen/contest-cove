@@ -1,33 +1,33 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { RouterLink, RouterLinkActive } from "@angular/router";
 
 // services
-import { SharedDataService } from '../internal-services/shared-data.service';
-import { SignOutService } from '../internal-services/sign-out.service';
+import { SharedDataService } from "../internal-services/shared-data.service";
+import { SignOutService } from "../internal-services/sign-out.service";
 
 @Component({
-  selector: 'app-navbar',
-  standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
-  templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+    selector: "app-navbar",
+    standalone: true,
+    imports: [CommonModule, RouterLink, RouterLinkActive],
+    templateUrl: "./navbar.component.html",
+    styleUrl: "./navbar.component.css",
 })
 export class NavbarComponent {
-  name: string;
+    name: string;
 
-  constructor (
-    private sharedDataService: SharedDataService,
-    private signOutService: SignOutService
-  ) {}
+    constructor(
+        private sharedDataService: SharedDataService,
+        private signOutService: SignOutService
+    ) {}
 
-  ngOnInit() {
-    this.sharedDataService.getCookieName().subscribe(name => {
-      this.name = name;
-    });
-  }
+    ngOnInit() {
+        this.sharedDataService.getCookieName().subscribe((name) => {
+            this.name = name;
+        });
+    }
 
-  signOut() {
-    this.signOutService.signOut();
-  }
+    signOut() {
+        this.signOutService.signOut();
+    }
 }
