@@ -115,16 +115,16 @@
                                         "
                                     >
                                         @if (attendee.name) {
+                                        <div class="col-8">
+                                            <p class="card-text">
+                                                {{ attendee.name }}
+                                            </p>
+                                        </div>
                                         <div class="col-4">
                                             <p
                                                 class="card-text text-end fw-semibold font-monospace"
                                             >
                                                 {{ attendee.value }}
-                                            </p>
-                                        </div>
-                                        <div class="col-8">
-                                            <p class="card-text">
-                                                {{ attendee.name }}
                                             </p>
                                         </div>
                                         }
