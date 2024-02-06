@@ -1,206 +1,243 @@
 <div class="container">
-    <div class="row m-1">
-        <div class="col">
-            <h1>{{ contestId }}</h1>
-            <hr>
+    <div class="row m-1 mb-4">
+        <div class="col-xs-12 col-sm-12">
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h3 class="card-title text-center">{{ contestId }}</h3>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Logging -->
-    <div class="row mt-1 ms-1 me-1">
+    <div class="row m-1">
+
         @if (!loadingObjectives) {
-            @if (contestObjectiveListResponseBody) {
-                <div class="col-6">
-                    <div class="card bg-secondary text-white second-row-height">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">Logging</h5>
-                            <hr>
-                            <div class="container">
-                                <div class="row mb-1" *ngFor="let objective of contestObjectiveListResponseBody.data.objectives; let i = index">
-                                    <div class="col-3 d-flex justify-content-center align-items-center">
-                                        <span class="fw-semibold text-white">{{ objective.name }}</span>
-                                    </div>
-                                    @if (contestDetailResponseBody.data.state === "Started") {
-                                        <div class="btn-group col-5">
-                                            <a class="btn btn-danger text-white" (click)="entryLess(i)"><i class="fa-solid fa-minus"></i></a>
-                                            <a class="btn btn-secondary disabled text-white fw-semibold font-monospace">{{ entryValues[i] }}</a>
-                                            <a class="btn btn-success text-white" (click)="entryMore(i)"><i class="fa-solid fa-plus"></i></a>
-                                        </div>
-                                    } @else {
-                                        <div class="btn-group col-5">
-                                            <a class="btn btn-danger text-white disabled"><i class="fa-solid fa-minus"></i></a>
-                                            <a class="btn btn-secondary disabled text-white fw-semibold font-monospace">{{ entryValues[i] }}</a>
-                                            <a class="btn btn-success text-white disabled"><i class="fa-solid fa-plus"></i></a>
-                                        </div>
-                                    }
-                                    <div class="col-2 d-flex justify-content-center align-items-center">
-                                        <span class="fw-semibold text-white font-monospace">x {{ objective.value }}</span>
-                                    </div>
-                                    <div class="col-2 d-flex justify-content-center align-items-center">
-                                        <span class="fw-semibold text-white font-monospace">{{ entryValues[i] * objective.value }}</span>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    @if (contestDetailResponseBody.data.state === "Open") {
-                                        <button class="btn btn-warning text-white" disabled>Waiting</button>
-                                    }
-                                    @if (contestDetailResponseBody.data.state === "Started") {
-                                        <button class="btn btn-info text-white" [disabled]="!overallEntrySum" (click)="logEntry()">Submit <span class="badge">{{ overallEntrySum }}</span></button>
-                                    }
-                                    @if (contestDetailResponseBody.data.state === "Closed") {
-                                        <button class="btn btn-danger text-white" disabled>Closed</button>
-                                    }
-                                </div>
+        @if (contestObjectiveListResponseBody) {
+        <div class="col-xs-12 col-xl-6 mb-3">
+            <div class="card bg-secondary text-white second-row-height">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Logging</h5>
+                    <hr>
+
+                    <div class="container">
+                        <div class="row mb-1"
+                            *ngFor="let objective of contestObjectiveListResponseBody.data.objectives; let i = index">
+                            <div class="col-xs-3 col-sm-3 d-flex justify-content-center align-items-center">
+                                <span class="fw-semibold text-white">{{ objective.name }}</span>
                             </div>
+
+                            @if (contestDetailResponseBody.data.state === "Started") {
+                            <div class="btn-group col-xs-5 col-sm-5">
+                                <a class="btn btn-danger text-white" (click)="entryLess(i)">
+                                    <i class="fa-solid fa-minus"></i>
+                                </a>
+                                <a class="btn btn-secondary disabled text-white fw-semibold font-monospace">
+                                    {{ entryValues[i] }}
+                                </a>
+                                <a class="btn btn-success text-white" (click)="entryMore(i)">
+                                    <i class="fa-solid fa-plus"></i>
+                                </a>
+                            </div>
+                            } @else {
+                            <div class="btn-group col-xs-5 col-sm-5">
+                                <a class="btn btn-danger text-white disabled">
+                                    <i class="fa-solid fa-minus"></i>
+                                </a>
+                                <a class="btn btn-secondary disabled text-white fw-semibold font-monospace">
+                                    {{ entryValues[i] }}</a>
+                                <a class="btn btn-success text-white disabled">
+                                    <i class="fa-solid fa-plus"></i>
+                                </a>
+                            </div>
+                            }
+
+                            <div class="col-xs-2 col-sm-2 d-flex justify-content-center align-items-center">
+                                <span class="fw-semibold text-white font-monospace">x {{ objective.value }}</span>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 d-flex justify-content-center align-items-center">
+                                <span class="fw-semibold text-white font-monospace">
+                                    {{ entryValues[i] * objective.value}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            @if (contestDetailResponseBody.data.state === "Open") {
+                            <button class="btn btn-warning text-white" disabled>Waiting</button>
+                            }
+
+                            @if (contestDetailResponseBody.data.state === "Started") {
+                            <button class="btn btn-info text-white" [disabled]="!overallEntrySum"
+                                (click)="logEntry()">Submit <span class="badge">{{ overallEntrySum }}</span></button>
+                            }
+
+                            @if (contestDetailResponseBody.data.state === "Closed") {
+                            <button class="btn btn-danger text-white" disabled>Closed</button>
+                            }
                         </div>
                     </div>
                 </div>
-            }
+            </div>
+        </div>
+        }
         } @else {
-            <div class="col-6">
-                <div class="card bg-secondary text-white second-row-height">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Logging
-                            <div class="spinner-grow spinner-grow-sm" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </h5>
-                        <hr>
-                    </div>
+        <div class="col-xs-12 col-xl-6 mb-3">
+            <div class="card bg-secondary text-white second-row-height">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Logging
+                        <div class="spinner-grow spinner-grow-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </h5>
+                    <hr>
                 </div>
             </div>
+        </div>
         }
 
         <!-- Live Feed-->
         @if (!loadingEntries) {
-            <div class="col-6">
-                <div class="card bg-secondary text-white second-row-height">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Live Feed</h5>
-                        <hr>
-                        @if (contestAttendeeEntryListResponseBody) {
-                            <div class="container">
-                                <div class="row mb-3">
-                                    <div class="col-3">
-                                        <span class="fw-bold text-white">Name</span>
-                                    </div>
-                                    <div class="col-1 d-flex justify-content-center align-items-center">
-                                        <span class="fw-bold text-white">Time</span>
-                                    </div>
-                                    <div class="col-1 d-flex justify-content-center align-items-center">
-                                        <span class="fw-bold text-white"><i class="fa-regular fa-circle"></i></span>
-                                    </div>
-                                    <div class="col d-flex justify-content-center align-items-center" *ngFor="let objective of contestAttendeeEntryListResponseBody.data.entries[0].values; let i = index">
-                                        <span class="fw-bold text-white">{{ objective.name }}</span>
-                                    </div>
+        <div class="col-xs-12 col-xl-6 mb-3">
+            <div class="card bg-secondary text-white second-row-height">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Live Feed</h5>
+                    <hr>
+
+                    @if (contestAttendeeEntryListResponseBody) {
+                    <div class="container">
+                        <div class="row mb-3">
+                            <div class="col-xs-3 col-sm-3">
+                                <span class="fw-bold text-white">Name</span>
+                            </div>
+
+                            <div class="d-none d-lg-block col-lg-1 col-xl-2 d-flex justify-content-center align-items-center">
+                                <span class="fw-bold text-white">Time</span>
+                            </div>
+
+                            <div class="d-none d-md-block col-md-1 d-flex justify-content-center align-items-center">
+                                <span class="fw-bold text-white"><i class="fa-regular fa-circle"></i></span>
+                            </div>
+
+                            <div class="col d-flex justify-content-center align-items-center"
+                                *ngFor="let objective of contestAttendeeEntryListResponseBody.data.entries[0].values; let i = index">
+                                <span class="fw-bold text-white">{{ objective.name }}</span>
+                            </div>
+                        </div>
+                        <div *ngFor="let entry of contestAttendeeEntryListResponseBody.data.entries; let i = index">
+                            <div class="row mb-2" *ngIf="i<7">
+                                <div class="col-xs-3 col-sm-3">
+                                    @if (entry.attendeeName) {
+                                    <span class="text-white">{{ entry.attendeeName }}</span>
+                                    } @else {
+                                    <span class="text-white fst-italic">Unknown</span>
+                                    }
                                 </div>
-                                <div *ngFor="let entry of contestAttendeeEntryListResponseBody.data.entries; let i = index">
-                                    <div class="row mb-2" *ngIf="i<7">
-                                        <div class="col-3">
-                                            @if (entry.attendeeName) {
-                                                <span class="text-white">{{ entry.attendeeName }}</span>
-                                            } @else {
-                                                <span class="text-white fst-italic">Unknown</span>
-                                            }
-                                        </div>
-                                        <div class="col-1 d-flex justify-content-center align-items-center">
-                                            <span class="text-white font-monospace">{{ entry.modtime }}</span>
-                                        </div>
-                                        <div class="col-1 d-flex justify-content-center align-items-center">
-                                            <span class="text-white font-monospace">{{ entry.round }}</span>
-                                        </div>
-                                        <div class="col d-flex justify-content-center align-items-center" *ngFor="let objective of contestAttendeeEntryListResponseBody.data.entries[i].values; let j = index">
-                                            <span class="text-white font-monospace">{{ objective.value }}</span>
-                                        </div>
-                                    </div>
+                                <div class="d-none d-lg-block col-lg-1 col-xl-2 d-flex justify-content-center align-items-center">
+                                    <span class="text-white font-monospace">{{ entry.modtime }}</span>
+                                </div>
+                                <div class="d-none d-md-block col-md-1 d-flex justify-content-center align-items-center">
+                                    <span class="text-white font-monospace">{{ entry.round }}</span>
+                                </div>
+                                <div class="col d-flex justify-content-center align-items-center"
+                                    *ngFor="let objective of contestAttendeeEntryListResponseBody.data.entries[i].values; let j = index">
+                                    <span class="text-white font-monospace">{{ objective.value }}</span>
                                 </div>
                             </div>
-                        } @else {
-                            <div class="d-flex justify-content-center align-items-center">
-                                <span class="text-white">No entries, yet!</span>
-                            </div>
-                        }
+                        </div>
                     </div>
+                    } @else {
+                    <div class="d-flex justify-content-center align-items-center">
+                        <span class="text-white">No entries, yet!</span>
+                    </div>
+                    }
                 </div>
             </div>
+        </div>
         } @else {
-            <div class="col-6">
-                <div class="card bg-secondary text-white second-row-height">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Live Feed
-                            <div class="spinner-grow spinner-grow-sm" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </h5>
-                        <hr>
-                    </div>
+        <div class="col-xs-12 col-xl-6 mb-3">
+            <div class="card bg-secondary text-white second-row-height">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Live Feed
+                        <div class="spinner-grow spinner-grow-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </h5>
+                    <hr>
                 </div>
             </div>
+        </div>
         }
     </div>
 
     <!-- Standings -->
-    <div class="row mt-3 ms-1 me-1">
+    <div class="row m-1">
+
         @if (!loadingAttendees) {
-            @if (contestAttendeeListResponseBody) {
-                <div class="col mb-3" *ngFor="let round of contestAttendeeListResponseBody.data.attendees[0].places; let i = index">
-                    <div class="card bg-secondary text-white">
-                        <div class="card-body">
-                            @if (i) {
-                                <h5 class="card-title text-center">Round {{ i }}</h5>
-                            } @else {
-                                <h5 class="card-title text-center">Overall</h5>
-                            }
-                            <hr>
-                            <div class="container">
-                                <div class="row" *ngFor="let contestAttendee of sortedAttendees[i]; let j = index">
-                                    <div class="col-2">
-                                        @if (sortedAttendees[i][j].places[i] === 1 && sortedAttendees[i][j].points[i] !== 0) {
-                                            <p class="card-text">🥇</p>
-                                        }
-                                        @if (sortedAttendees[i][j].places[i] === 2 && sortedAttendees[i][j].points[i] !== 0) {
-                                            <p class="card-text">🥈</p>
-                                        }
-                                        @if (sortedAttendees[i][j].places[i] === 3 && sortedAttendees[i][j].points[i] !== 0) {
-                                            <p class="card-text">🥉</p>
-                                        }
-                                    </div>
-                                    <div class="col-7">
-                                        @if (sortedAttendees[i][j].name) {
-                                            <p class="card-text">{{ sortedAttendees[i][j].name }}</p>
-                                        } @else {
-                                            <p class="card-text fst-italic">Unknown</p>
-                                        }
-                                    </div>
-                                    <div class="col-3">
-                                        <p class="card-text text-end fw-semibold font-monospace">{{ sortedAttendees[i][j].points[i] }}</p>
-                                    </div>
-                                </div>
+        @if (contestAttendeeListResponseBody) {
+        <div class="col-xs-12 col-md-6 col-xl-3 mb-3"
+            *ngFor="let round of contestAttendeeListResponseBody.data.attendees[0].places; let i = index">
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    @if (i) {
+                    <h5 class="card-title text-center">Round {{ i }}</h5>
+                    } @else {
+                    <h5 class="card-title text-center">Overall</h5>
+                    }
+                    <hr>
+
+                    <div class="container">
+                        <div class="row" *ngFor="let contestAttendee of sortedAttendees[i]; let j = index">
+                            <div class="col-xs-2 col-sm-2">
+                                @if (sortedAttendees[i][j].places[i] === 1 && sortedAttendees[i][j].points[i] !== 0) {
+                                <p class="card-text">🥇</p>
+                                }
+
+                                @if (sortedAttendees[i][j].places[i] === 2 && sortedAttendees[i][j].points[i] !== 0) {
+                                <p class="card-text">🥈</p>
+                                }
+
+                                @if (sortedAttendees[i][j].places[i] === 3 && sortedAttendees[i][j].points[i] !== 0) {
+                                <p class="card-text">🥉</p>
+                                }
+                            </div>
+                            <div class="col-xs-7 col-sm-7">
+                                @if (sortedAttendees[i][j].name) {
+                                <p class="card-text">{{ sortedAttendees[i][j].name }}</p>
+                                } @else {
+                                <p class="card-text fst-italic">Unknown</p>
+                                }
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <p class="card-text text-end fw-semibold font-monospace">{{
+                                    sortedAttendees[i][j].points[i] }}</p>
                             </div>
                         </div>
-                    </div>
-                </div>
-            } @else {
-                <div class="col mb-3">
-                    <div class="card bg-secondary text-white">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">No attendees, yet!</h5>
-                        </div>
-                    </div>
-                </div>
-            }
-        } @else {
-            <div class="col mb-3">
-                <div class="card bg-secondary text-white">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Attendees
-                            <div class="spinner-grow spinner-grow-sm" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </h5>
                     </div>
                 </div>
             </div>
+        </div>
+        } @else {
+        <div class="col-xs-12 col-sm-12 mb-3">
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h5 class="card-title text-center">No attendees, yet!</h5>
+                </div>
+            </div>
+        </div>
+        }
+
+        } @else {
+        <div class="col-xs-12 col-sm-12 mb-3">
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Attendees
+                        <div class="spinner-grow spinner-grow-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </h5>
+                </div>
+            </div>
+        </div>
         }
     </div>
 </div>
