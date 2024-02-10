@@ -9,9 +9,9 @@
         </div>
     </div>
 
-    <div class="row m-1 mb-2">
+    <div class="row m-1 mb-3">
 
-        <!-- MEDALS-->
+        <!-- Medals -->
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-5 mb-2">
             <div class="card bg-secondary text-white">
                 <div class="card-body">
@@ -75,7 +75,7 @@
             </div>
         </div>
 
-        <!-- POINTS-->
+        <!-- Points -->
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-7 mb-2">
             <div class="card bg-secondary text-white">
                 <div class="card-body">
@@ -152,6 +152,126 @@
                             <div class="d-none d-sm-block col-sm-6 col-md-6 col-lg-6 col-xl-4">
                                 <div class="container">
                                     <div class="row" *ngFor="let attendee of statisticsPoints[2]">
+                                        @if (attendee.name) {
+                                        <div class="col-xs-8 col-sm-8">
+                                            <p class="card-text text-truncate">
+                                                {{ attendee.name }}
+                                            </p>
+                                        </div>
+
+                                        <div class="col-xs-4 col-sm-4">
+                                            <p class="card-text text-end text-truncate fw-semibold font-monospace">
+                                                {{ attendee.value }}
+                                            </p>
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    } @else {
+                    <h5 class="card-title text-center">
+                        Points
+                        <div class="spinner-grow spinner-grow-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </h5>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Objectives -->
+    <div class="row m-1 mb-4">
+        <div class="col-xs-12 col-sm-12">
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h3 class="card-title text-center">Objectives</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row m-1">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 mb-3"
+            *ngFor="let objective of statisticsObjectivePoints">
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+
+                    @if (!loadingObjectivePoints) {
+                    <h5 class="card-title text-center">{{ objective.name }}</h5>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+                                <p class="card-text text-center fw-semibold">
+                                    Total
+                                </p>
+                            </div>
+
+                            <div class="d-none d-xl-block col-xl-4">
+                                <p class="card-text text-center fw-semibold">
+                                    Average
+                                </p>
+                            </div>
+
+                            <div class="d-none d-sm-block col-sm-6 col-md-6 col-lg-6 col-xl-4">
+                                <p class="card-text text-center fw-semibold">
+                                    Best
+                                </p>
+                            </div>
+                        </div>
+                        <hr />
+
+                        <div class="row">
+
+                            <!-- Total-->
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+                                <div class="container">
+                                    <div class="row" *ngFor="let attendee of objective.values[0]">
+                                        @if (attendee.name) {
+                                        <div class="col-xs-8 col-sm-8">
+                                            <p class="card-text text-truncate">
+                                                {{ attendee.name }}
+                                            </p>
+                                        </div>
+
+                                        <div class="col-xs-4 col-sm-4">
+                                            <p class="card-text text-end text-truncate fw-semibold font-monospace">
+                                                {{ attendee.value }}
+                                            </p>
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Average-->
+                            <div class="d-none d-xl-block col-xl-4">
+                                <div class="container">
+                                    <div class="row" *ngFor="let attendee of objective.values[1]">
+                                        @if (attendee.name) {
+                                        <div class="col-xs-8 col-sm-8">
+                                            <p class="card-text text-truncate">
+                                                {{ attendee.name }}
+                                            </p>
+                                        </div>
+
+                                        <div class="col-xs-4 col-sm-4">
+                                            <p class="card-text text-end text-truncate fw-semibold font-monospace">
+                                                {{ attendee.value }}
+                                            </p>
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Best-->
+                            <div class="d-none d-sm-block col-sm-6 col-md-6 col-lg-6 col-xl-4">
+                                <div class="container">
+                                    <div class="row" *ngFor="let attendee of objective.values[2]">
                                         @if (attendee.name) {
                                         <div class="col-xs-8 col-sm-8">
                                             <p class="card-text text-truncate">

@@ -11,14 +11,19 @@
 
             <!-- Left Side -->
             <ul class="navbar-nav me-auto">
+                <!-- Home -->
                 <li class="nav-item">
                     <a class="btn btn-secondary text-white fw-semibold me-2" routerLink="/" routerLinkActive="active"
                         [routerLinkActiveOptions]="{ exact: true }">Home</a>
                 </li>
+
+                <!-- Contests -->
                 <li class="nav-item">
                     <a class="btn btn-secondary text-white fw-semibold me-2" routerLink="/contests"
                         routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Contests</a>
                 </li>
+
+                <!-- Leaderboard -->
                 <li class="nav-item">
                     <a class="btn btn-secondary text-white fw-semibold me-2" routerLink="/leaderboard"
                         routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Leaderboard</a>
@@ -28,6 +33,12 @@
             <!-- Right Side -->
             <ul class="navbar-nav ms-auto">
 
+                <!-- Version -->
+                <li class="nav-item">
+                    <a class="btn btn-secondary text-white disabled me-2">v{{ version }}</a>
+                </li>
+
+                <!-- Name -->
                 @if (name !== "") {
                 <li class="nav-item">
                     <a class="btn btn-secondary text-white fw-semibold me-2" routerLink="/profile"
@@ -38,7 +49,8 @@
                     <a class="btn btn-secondary text-white fw-semibold me-2" routerLink="/sign-in"
                         routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Sign-In</a>
                 </li>
-                
+
+                <!-- Sign Out -->
                 } @if (name !== "") {
                 <li class="nav-item">
                     <a class="btn btn-danger text-white fw-semibold" (click)="signOut()"><i

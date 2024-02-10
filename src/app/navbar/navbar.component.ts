@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterLink, RouterLinkActive } from "@angular/router";
+import * as packageJSON from "../../../package.json";
 
 // services
 import { SharedDataService } from "../internal-services/shared-data.service";
@@ -15,6 +16,7 @@ import { SignOutService } from "../internal-services/sign-out.service";
 })
 export class NavbarComponent {
     name: string;
+    version: string = packageJSON.version;
 
     constructor(
         private sharedDataService: SharedDataService,

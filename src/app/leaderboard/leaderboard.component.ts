@@ -20,9 +20,11 @@ export class LeaderboardComponent {
 
     loadingMedals: boolean;
     loadingPoints: boolean;
+    loadingObjectivePoints: boolean;
 
     statisticsMedals: any[] = [];
     statisticsPoints: any[] = [];
+    statisticsObjectivePoints: any[] = [];
 
     constructor(
         private contestStatisticsListService: ContestStatisticsListService
@@ -31,6 +33,7 @@ export class LeaderboardComponent {
     ngOnInit() {
         this.loadingMedals = true;
         this.loadingPoints = true;
+        this.loadingObjectivePoints = true;
 
         // get statistics list
         this.contestStatisticsListService.listContestStatistics().subscribe(
@@ -42,6 +45,8 @@ export class LeaderboardComponent {
                 this.loadingMedals = false;
                 this.sortByPoints();
                 this.loadingPoints = false;
+                this.sortByObjectivePoints();
+                this.loadingObjectivePoints = false;
             },
             (error) => {}
         );
@@ -105,6 +110,47 @@ export class LeaderboardComponent {
             });
 
             this.statisticsPoints.push(statistics);
+        }
+    }
+
+    sortByObjectivePoints() {
+        let attendees = this.contestStatisticsListResponseBody.data;
+
+        // get each objective
+        for (let i = 0; i < attendees[0].objectives.length; i++) {
+            let categoryList: any[] = [];
+
+            // get each category
+            for (let j = 0; j < attendees[0].objectives[i].values.length; j++) {
+                let attendeeList: any[] = [];
+
+                // get each attendee
+                for (let k = 0; k < attendees.length; k++) {
+                    let pointsData = {
+                        name: attendees[k].attendee.name,
+                        value: Math.round(
+                            (attendees[k].objectives[i].values[j] * 100) / 100
+                        ),
+                    };
+
+                    attendeeList.push(pointsData);
+                }
+
+                // sort attendees based on points value
+                attendeeList.sort((a: any, b: any) => {
+                    return b.value - a.value;
+                });
+
+                categoryList.push(attendeeList);
+            }
+
+            let objectiveData = {
+                name: attendees[0].objectives[i].name,
+                values: categoryList,
+            };
+
+            // fill objective
+            this.statisticsObjectivePoints.push(objectiveData);
         }
     }
 }
