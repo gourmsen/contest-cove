@@ -110,7 +110,8 @@
                                 <span class="fw-bold text-white">Name</span>
                             </div>
 
-                            <div class="d-none d-lg-block col-lg-1 col-xl-2 d-flex justify-content-center align-items-center">
+                            <div
+                                class="d-none d-lg-block col-lg-1 col-xl-2 d-flex justify-content-center align-items-center">
                                 <span class="fw-bold text-white">Time</span>
                             </div>
 
@@ -132,10 +133,12 @@
                                     <span class="text-white fst-italic">Unknown</span>
                                     }
                                 </div>
-                                <div class="d-none d-lg-block col-lg-1 col-xl-2 d-flex justify-content-center align-items-center">
+                                <div
+                                    class="d-none d-lg-block col-lg-1 col-xl-2 d-flex justify-content-center align-items-center">
                                     <span class="text-white font-monospace">{{ entry.modtime }}</span>
                                 </div>
-                                <div class="d-none d-md-block col-md-1 d-flex justify-content-center align-items-center">
+                                <div
+                                    class="d-none d-md-block col-md-1 d-flex justify-content-center align-items-center">
                                     <span class="text-white font-monospace">{{ entry.round }}</span>
                                 </div>
                                 <div class="col d-flex justify-content-center align-items-center"
@@ -213,6 +216,39 @@
                             </div>
                         </div>
                     </div>
+                    <hr>
+
+                    <!-- Teams -->
+                    @if(i) {
+                    @if(!loadingTeams) {
+                    @if(contestTeamListResponseBody.data.rounds[i - 1].teams.length) {
+                    <div class="container">
+                        <div class="row"
+                            *ngFor="let team of contestTeamListResponseBody.data.rounds[i - 1].teams; let j = index">
+                            <div class="d-flex justify-content-center align-items-center mb-3">
+                                <span class="text-white fw-semibold">Team {{ j + 1}}</span>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center"
+                                *ngFor="let attendee of team.attendees">
+                                <span>{{ attendee.name }}</span>
+                            </div>
+                            <div class="m-2"></div>
+                        </div>
+                    </div>
+
+                    } @else {
+                    <div class="d-flex justify-content-center align-items-center">
+                        <span class="text-white fst-italic">No teams in this round</span>
+                    </div>
+                    }
+                    } @else {
+                    <h5 class="card-title text-center">Teams
+                        <div class="spinner-grow spinner-grow-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </h5>
+                    }
+                    }
                 </div>
             </div>
         </div>
