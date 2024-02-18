@@ -15,6 +15,7 @@ import { ContestAttendeeEntryNewService } from "../http-services/contest-attende
 import { ContestAttendeeEntryListService } from "../http-services/contest-attendee-entry-list.service";
 import { ContestTeamsNewService } from "../http-services/contest-teams-new.service";
 import { ContestTeamListService } from "../http-services/contest-team-list.service";
+import { ContestTeamsUpdateService } from "../http-services/contest-teams-update.service";
 
 // interfaces
 import { ContestDetailResponse } from "../interfaces/contest-detail-response";
@@ -26,6 +27,8 @@ import { ContestAttendeeEntryListResponse } from "../interfaces/contest-attendee
 import { ContestTeamsNewRequest } from "../interfaces/contest-teams-new-request";
 import { ContestTeamsNewResponse } from "../interfaces/contest-teams-new-response";
 import { ContestTeamListResponse } from "../interfaces/contest-team-list-response";
+import { ContestTeamsUpdateRequest } from "../interfaces/contest-teams-update-request";
+import { ContestTeamsUpdateResponse } from "../interfaces/contest-teams-update-response";
 
 @Component({
     selector: "app-contest-detail",
@@ -42,6 +45,7 @@ export class ContestDetailComponent {
     contestAttendeeEntryListResponseBody: ContestAttendeeEntryListResponse;
     contestTeamListResponseBody: ContestTeamListResponse;
     contestTeamsNewResponseBody: ContestTeamsNewResponse;
+    contestTeamsUpdateResponseBody: ContestTeamsUpdateResponse;
 
     loadingAttendees: boolean;
     loadingObjectives: boolean;
@@ -71,7 +75,8 @@ export class ContestDetailComponent {
         private contestAttendeeEntryNewService: ContestAttendeeEntryNewService,
         private contestAttendeeEntryListService: ContestAttendeeEntryListService,
         private contestTeamsNewService: ContestTeamsNewService,
-        private contestTeamListService: ContestTeamListService
+        private contestTeamListService: ContestTeamListService,
+        private contestTeamsUpdateService: ContestTeamsUpdateService
     ) {}
 
     ngOnInit() {
@@ -334,7 +339,7 @@ export class ContestDetailComponent {
     }
 
     generateTeams() {
-        let contestTeamsNewRequest = {
+        let contestTeamsNewRequest: ContestTeamsNewRequest = {
             contestId: this.contestId,
             teamSizes: this.teamSizes,
         };
@@ -347,5 +352,36 @@ export class ContestDetailComponent {
         );
     }
 
-    updateTeams() {}
+    moveAttendee(direction: number, teamPos: number, attendeePos: number) {
+        let currentRound = this.contestDetailResponseBody.data.currentRound;
+
+        let movedAttendee = this.contestTeamListResponseBody.data.rounds[currentRound - 1].teams[
+            teamPos
+        ].attendees.splice(attendeePos, 1);
+
+        if (direction) {
+            teamPos--;
+        } else {
+            teamPos++;
+        }
+
+        this.contestTeamListResponseBody.data.rounds[currentRound - 1].teams[teamPos].attendees.push(movedAttendee[0]);
+    }
+
+    updateTeams() {
+        let currentRound = this.contestDetailResponseBody.data.currentRound;
+
+        let contestTeamsUpdateRequest: ContestTeamsUpdateRequest = {
+            contestId: this.contestId,
+            round: currentRound,
+            teams: this.contestTeamListResponseBody.data.rounds[currentRound - 1].teams,
+        };
+
+        this.contestTeamsUpdateService.updateContestTeams(contestTeamsUpdateRequest).subscribe(
+            (contestTeamsUpdateResponse) => {
+                this.contestTeamsUpdateResponseBody = contestTeamsUpdateResponse.body!;
+            },
+            (error) => {}
+        );
+    }
 }

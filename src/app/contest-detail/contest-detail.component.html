@@ -229,8 +229,21 @@
                                 <span class="text-white fw-semibold">Team {{ j + 1}}</span>
                             </div>
                             <div class="d-flex justify-content-center align-items-center"
-                                *ngFor="let attendee of team.attendees">
+                                *ngFor="let attendee of team.attendees; let k = index">
+                                @if(i === contestDetailResponseBody.data.currentRound && j) {
+                                <button class="btn btn-secondary btn-sm text-white ms-1 me-1"
+                                    (click)="moveAttendee(1, j, k)">
+                                    <i class="fa-solid fa-caret-up"></i>
+                                </button>
+                                }
                                 <span>{{ attendee.name }}</span>
+                                @if(i === contestDetailResponseBody.data.currentRound &&
+                                j !== contestTeamListResponseBody.data.rounds[i - 1].teams.length - 1) {
+                                <button class="btn btn-secondary btn-sm text-white ms-1 me-1"
+                                    (click)="moveAttendee(0, j, k)">
+                                    <i class=" fa-solid fa-caret-down"></i>
+                                </button>
+                                }
                             </div>
                             <div class="m-2"></div>
                         </div>
