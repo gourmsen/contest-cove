@@ -145,6 +145,19 @@ export class ContestDetailComponent {
                                     );
 
                                     this.loadingAttendees = false;
+
+                                    // get team list
+                                    this.loadingTeams = true;
+                                    this.contestTeamListService.listContestTeams(this.contestId).subscribe(
+                                        (contestTeamListResponse) => {
+                                            this.contestTeamListResponseBody = contestTeamListResponse.body!;
+
+                                            this.loadingTeams = false;
+                                        },
+                                        (error) => {
+                                            this.loadingTeams = false;
+                                        }
+                                    );
                                 },
                                 (error) => {
                                     if (error.status === 404) {
