@@ -300,9 +300,15 @@
                         }
 
                         <!-- Update Teams -->
+                        @if(buttonTeamUpdateClicked) {
+                        <button class="btn btn-success m-1 text-white disabled">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                        } @else {
                         <button class="btn btn-warning m-1 text-white" (click)="updateTeams()">
                             <i class="fa-solid fa-cloud-arrow-up"></i>
                         </button>
+                        }
                     </div>
                     }
                     }

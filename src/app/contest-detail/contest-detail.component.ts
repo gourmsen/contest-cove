@@ -63,6 +63,8 @@ export class ContestDetailComponent {
     teamSizes: number[] = [];
     overallSizeSum: number = 0;
 
+    buttonTeamUpdateClicked: boolean;
+
     isSocketConnected: boolean = false;
 
     constructor(
@@ -82,10 +84,18 @@ export class ContestDetailComponent {
     ngOnInit() {
         this.contestId = this.route.snapshot.paramMap.get("contestId") || "";
 
+        // loading
         this.loadingAttendees = true;
         this.loadingObjectives = true;
         this.loadingEntries = true;
         this.loadingTeams = true;
+
+        // button clicks
+        this.buttonTeamUpdateClicked = false;
+
+        /*
+        <----- GET WEB-SOCKET DATA ----->
+        */
 
         // connect to web-socket
         this.socketService.connect().subscribe(
@@ -96,7 +106,12 @@ export class ContestDetailComponent {
                     this.isSocketConnected = true;
                 }
 
-                if (parsedMessage.event === "contest-attendee-entry-new" || parsedMessage.event === "contest-update") {
+                if (
+                    parsedMessage.event === "contest-attendee-entry-new" ||
+                    parsedMessage.event === "contest-update" ||
+                    parsedMessage.event === "contest-join" ||
+                    parsedMessage.event === "contest-leave"
+                ) {
                     // get contest attendee entries
                     this.loadingEntries = true;
                     this.contestAttendeeEntryListService.listContestAttendeeEntries(this.contestId).subscribe(
@@ -145,12 +160,31 @@ export class ContestDetailComponent {
                         }
                     );
                 }
+
+                if (parsedMessage.event === "contest-teams-new" || parsedMessage.event === "contest-teams-update") {
+                    // get team list
+                    this.loadingTeams = true;
+                    this.contestTeamListService.listContestTeams(this.contestId).subscribe(
+                        (contestTeamListResponse) => {
+                            this.contestTeamListResponseBody = contestTeamListResponse.body!;
+
+                            this.loadingTeams = false;
+                        },
+                        (error) => {
+                            this.loadingTeams = false;
+                        }
+                    );
+                }
             },
             (error) => {},
             () => {
                 this.isSocketConnected = false;
             }
         );
+
+        /*
+        <----- GET HTTP DATA ----->
+        */
 
         // get userId
         this.sharedDataService.getCookieUserId().subscribe((userId) => {
@@ -380,8 +414,14 @@ export class ContestDetailComponent {
         this.contestTeamsUpdateService.updateContestTeams(contestTeamsUpdateRequest).subscribe(
             (contestTeamsUpdateResponse) => {
                 this.contestTeamsUpdateResponseBody = contestTeamsUpdateResponse.body!;
+
+                this.buttonTeamUpdateClicked = true;
             },
             (error) => {}
         );
+
+        setTimeout(() => {
+            this.buttonTeamUpdateClicked = false;
+        }, 3000);
     }
 }
