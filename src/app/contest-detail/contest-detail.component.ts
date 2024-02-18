@@ -41,6 +41,7 @@ export class ContestDetailComponent {
     contestAttendeeEntryNewResponseBody: ContestAttendeeEntryNewResponse;
     contestAttendeeEntryListResponseBody: ContestAttendeeEntryListResponse;
     contestTeamListResponseBody: ContestTeamListResponse;
+    contestTeamsNewResponseBody: ContestTeamsNewResponse;
 
     loadingAttendees: boolean;
     loadingObjectives: boolean;
@@ -54,6 +55,9 @@ export class ContestDetailComponent {
 
     entryValues: number[] = [];
     overallEntrySum: number = 0;
+
+    teamSizes: number[] = [];
+    overallSizeSum: number = 0;
 
     isSocketConnected: boolean = false;
 
@@ -292,4 +296,56 @@ export class ContestDetailComponent {
 
         this.overallEntrySum = 0;
     }
+
+    removeTeam() {
+        if (this.teamSizes.length > 0) {
+            this.teamSizes.pop();
+        }
+
+        this.calculateOverallSize();
+    }
+
+    addTeam() {
+        this.teamSizes.push(1);
+
+        this.calculateOverallSize();
+    }
+
+    sizeLess(index: number) {
+        if (this.teamSizes[index] > 1) {
+            this.teamSizes[index]--;
+        }
+
+        this.calculateOverallSize();
+    }
+
+    sizeMore(index: number) {
+        this.teamSizes[index]++;
+
+        this.calculateOverallSize();
+    }
+
+    calculateOverallSize() {
+        this.overallSizeSum = 0;
+
+        for (let i = 0; i < this.teamSizes.length; i++) {
+            this.overallSizeSum += this.teamSizes[i];
+        }
+    }
+
+    generateTeams() {
+        let contestTeamsNewRequest = {
+            contestId: this.contestId,
+            teamSizes: this.teamSizes,
+        };
+
+        this.contestTeamsNewService.generateContestTeams(contestTeamsNewRequest).subscribe(
+            (contestTeamsNewResponse) => {
+                this.contestTeamsNewResponseBody = contestTeamsNewResponse.body!;
+            },
+            (error) => {}
+        );
+    }
+
+    updateTeams() {}
 }
