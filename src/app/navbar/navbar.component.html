@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-secondary mb-5" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)">
+<nav class="navbar navbar-expand-md sticky-top bg-secondary mb-4" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)">
     <div class="container">
         <a class="navbar-brand" routerLink="/">
             <img src="../assets/ContestCoveLogo.svg" alt="Contest Cove" width="50" height="50" />
@@ -13,19 +13,19 @@
             <ul class="navbar-nav me-auto">
                 <!-- Home -->
                 <li class="nav-item">
-                    <a class="btn btn-secondary text-white fw-semibold me-2" routerLink="/" routerLinkActive="active"
+                    <a class="btn btn-secondary text-white fw-semibold m-2" routerLink="/" routerLinkActive="active"
                         [routerLinkActiveOptions]="{ exact: true }">Home</a>
                 </li>
 
                 <!-- Contests -->
                 <li class="nav-item">
-                    <a class="btn btn-secondary text-white fw-semibold me-2" routerLink="/contests"
+                    <a class="btn btn-secondary text-white fw-semibold m-2" routerLink="/contests"
                         routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Contests</a>
                 </li>
 
                 <!-- Leaderboard -->
                 <li class="nav-item">
-                    <a class="btn btn-secondary text-white fw-semibold me-2" routerLink="/leaderboard"
+                    <a class="btn btn-secondary text-white fw-semibold m-2" routerLink="/leaderboard"
                         routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Leaderboard</a>
                 </li>
             </ul>
@@ -34,26 +34,26 @@
             <ul class="navbar-nav ms-auto">
 
                 <!-- Version -->
-                <li class="nav-item">
-                    <a class="btn btn-secondary text-white disabled me-2">v{{ version }}</a>
+                <li class="d-none d-md-block nav-item">
+                    <a class="btn btn-secondary text-white disabled m-2">v{{ version }}</a>
                 </li>
 
                 <!-- Name -->
                 @if (name !== "") {
                 <li class="nav-item">
-                    <a class="btn btn-secondary text-white fw-semibold me-2" routerLink="/profile"
+                    <a class="btn btn-secondary text-white fw-semibold m-2" routerLink="/profile"
                         routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">{{ name }}</a>
                 </li>
                 } @else {
                 <li class="nav-item">
-                    <a class="btn btn-secondary text-white fw-semibold me-2" routerLink="/sign-in"
+                    <a class="btn btn-secondary text-white fw-semibold m-2" routerLink="/sign-in"
                         routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Sign-In</a>
                 </li>
 
                 <!-- Sign Out -->
                 } @if (name !== "") {
-                <li class="nav-item">
-                    <a class="btn btn-danger text-white fw-semibold" (click)="signOut()"><i
+                <li class="d-none d-md-block nav-item">
+                    <a class="btn btn-danger text-white fw-semibold m-2" (click)="signOut()"><i
                             class="fa-solid fa-right-from-bracket"></i></a>
                 </li>
                 }
