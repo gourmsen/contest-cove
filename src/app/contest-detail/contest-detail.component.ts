@@ -16,6 +16,9 @@ import { ContestAttendeeEntryListService } from "../http-services/contest-attend
 import { ContestTeamsNewService } from "../http-services/contest-teams-new.service";
 import { ContestTeamListService } from "../http-services/contest-team-list.service";
 import { ContestTeamsUpdateService } from "../http-services/contest-teams-update.service";
+import { ContestTimerDetailService } from "../http-services/contest-timer-detail.service";
+import { ContestTimerNewService } from "../http-services/contest-timer-new.service";
+import { TimerService } from "../internal-services/timer.service";
 
 // interfaces
 import { ContestDetailResponse } from "../interfaces/contest-detail-response";
@@ -29,6 +32,8 @@ import { ContestTeamsNewResponse } from "../interfaces/contest-teams-new-respons
 import { ContestTeamListResponse } from "../interfaces/contest-team-list-response";
 import { ContestTeamsUpdateRequest } from "../interfaces/contest-teams-update-request";
 import { ContestTeamsUpdateResponse } from "../interfaces/contest-teams-update-response";
+import { ContestTimerDetailResponse } from "../interfaces/contest-timer-detail-response";
+import { ContestTimerNewResponse } from "../interfaces/contest-timer-new-response";
 
 @Component({
     selector: "app-contest-detail",
@@ -46,6 +51,8 @@ export class ContestDetailComponent {
     contestTeamListResponseBody: ContestTeamListResponse;
     contestTeamsNewResponseBody: ContestTeamsNewResponse;
     contestTeamsUpdateResponseBody: ContestTeamsUpdateResponse;
+    contestTimerDetailResponseBody: ContestTimerDetailResponse;
+    contestTimerNewResponseBody: ContestTimerNewResponse;
 
     loadingAttendees: boolean;
     loadingObjectives: boolean;
@@ -78,7 +85,10 @@ export class ContestDetailComponent {
         private contestAttendeeEntryListService: ContestAttendeeEntryListService,
         private contestTeamsNewService: ContestTeamsNewService,
         private contestTeamListService: ContestTeamListService,
-        private contestTeamsUpdateService: ContestTeamsUpdateService
+        private contestTeamsUpdateService: ContestTeamsUpdateService,
+        private contestTimerDetailService: ContestTimerDetailService,
+        private contestTimerNewService: ContestTimerNewService,
+        private timerService: TimerService
     ) {}
 
     ngOnInit() {
@@ -207,6 +217,24 @@ export class ContestDetailComponent {
             this.contestDetailService.viewContest(this.contestId).subscribe(
                 (contestDetailResponse) => {
                     this.contestDetailResponseBody = contestDetailResponse.body!;
+
+                    // get round timer
+                    let currentRound = this.contestDetailResponseBody.data.currentRound;
+                    this.contestTimerDetailService.viewContestTimer(this.contestId, currentRound).subscribe(
+                        (contestTimerDetailResponse) => {
+                            this.contestTimerDetailResponseBody = contestTimerDetailResponse.body!;
+
+                            let start: string = this.contestTimerDetailResponseBody.data.start;
+                            let duration: number = this.contestTimerDetailResponseBody.data.duration;
+                            this.timerService.calculateRemainingTime(start, duration);
+                        },
+                        (error) => {
+                            if (error.status === 404) {
+                            }
+                            if (error.status === 400) {
+                            }
+                        }
+                    );
 
                     // get attendee list
                     this.contestAttendeeListService.listContestAttendees(this.contestId).subscribe(
