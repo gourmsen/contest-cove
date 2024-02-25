@@ -1,0 +1,3 @@
+# ignore compiled Bootstrap CSS
+custom.css linguist-detectable=false
+custom.css.map linguist-detectable=false
