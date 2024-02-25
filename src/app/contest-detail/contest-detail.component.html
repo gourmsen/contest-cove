@@ -8,7 +8,10 @@
             </div>
         </div>
 
+        <!-- Timer -->
         <div class="col-6 col-sm-6 col-md-4 col-lg-2">
+            @if (contestDetailResponseBody) {
+            @if (contestDetailResponseBody.data.state === "Started") {
             @if (!loadingTimer) {
             @if (contestTimerDetailResponseBody) {
             @if (remainingTime) {
@@ -31,6 +34,25 @@
             }
             }
             } @else {
+            @if (contestDetailResponseBody.data.authorId === userId) {
+            <div class="card bg-secondary text-white">
+                <div class="card-body d-flex justify-content-center align-items-center">
+                    <h3>&#8203;</h3>
+                    <div class="btn-group m-1">
+                        <a class="btn btn-danger btn-sm text-white" (click)="durationLess()">
+                            <i class="fa-solid fa-minus"></i>
+                        </a>
+                        <a class="btn btn-secondary btn-sm text-white fw-semibold font-monospace"
+                            (click)="createTimer()">
+                            {{ duration }}
+                        </a>
+                        <a class="btn btn-success btn-sm text-white" (click)="durationMore()">
+                            <i class="fa-solid fa-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            } @else {
             <div class="card bg-secondary text-white">
                 <div class="card-body">
                     <h3 class="card-title text-center">
@@ -39,7 +61,7 @@
                 </div>
             </div>
             }
-
+            }
             } @else {
             <div class="card bg-secondary text-white">
                 <div class="card-body">
@@ -50,6 +72,16 @@
                     </h3>
                 </div>
             </div>
+            }
+            } @else {
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h3 class="card-title text-center">
+                        <i class="fa-solid fa-stopwatch"></i>
+                    </h3>
+                </div>
+            </div>
+            }
             }
         </div>
     </div>

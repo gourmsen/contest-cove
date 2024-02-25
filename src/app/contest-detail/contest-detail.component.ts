@@ -36,6 +36,7 @@ import { ContestTeamListResponse } from "../interfaces/contest-team-list-respons
 import { ContestTeamsUpdateRequest } from "../interfaces/contest-teams-update-request";
 import { ContestTeamsUpdateResponse } from "../interfaces/contest-teams-update-response";
 import { ContestTimerDetailResponse } from "../interfaces/contest-timer-detail-response";
+import { ContestTimerNewRequest } from "../interfaces/contest-timer-new-request";
 import { ContestTimerNewResponse } from "../interfaces/contest-timer-new-response";
 
 @Component({
@@ -54,7 +55,7 @@ export class ContestDetailComponent {
     contestTeamListResponseBody: ContestTeamListResponse;
     contestTeamsNewResponseBody: ContestTeamsNewResponse;
     contestTeamsUpdateResponseBody: ContestTeamsUpdateResponse;
-    contestTimerDetailResponseBody: ContestTimerDetailResponse;
+    contestTimerDetailResponseBody: ContestTimerDetailResponse | null;
     contestTimerNewResponseBody: ContestTimerNewResponse;
 
     loadingAttendees: boolean;
@@ -67,6 +68,7 @@ export class ContestDetailComponent {
     userId: string;
 
     remainingTime: any[];
+    duration: number;
     timer: Subscription;
 
     sortedAttendees: any[][] = [];
@@ -100,6 +102,7 @@ export class ContestDetailComponent {
 
     ngOnInit() {
         this.contestId = this.route.snapshot.paramMap.get("contestId") || "";
+        this.duration = 45;
 
         // loading
         this.loadingAttendees = true;
@@ -150,6 +153,9 @@ export class ContestDetailComponent {
                     this.contestDetailService.viewContest(this.contestId).subscribe(
                         (contestDetailResponse) => {
                             this.contestDetailResponseBody = contestDetailResponse.body!;
+
+                            // clean up timer
+                            this.contestTimerDetailResponseBody = null;
 
                             // get attendee list
                             this.loadingAttendees = true;
@@ -203,6 +209,31 @@ export class ContestDetailComponent {
                         },
                         (error) => {
                             this.loadingTeams = false;
+                        }
+                    );
+                }
+
+                if (parsedMessage.event === "contest-timer-new") {
+                    this.loadingTimer = true;
+
+                    // get round timer
+                    let currentRound = this.contestDetailResponseBody.data.currentRound;
+                    this.contestTimerDetailService.viewContestTimer(this.contestId, currentRound).subscribe(
+                        (contestTimerDetailResponse) => {
+                            this.contestTimerDetailResponseBody = contestTimerDetailResponse.body!;
+
+                            let start: string = this.contestTimerDetailResponseBody.data.start;
+                            let duration: number = this.contestTimerDetailResponseBody.data.duration;
+                            this.startTimer(start, duration);
+
+                            this.loadingTimer = false;
+                        },
+                        (error) => {
+                            if (error.status === 404) {
+                            }
+                            if (error.status === 400) {
+                            }
+                            this.loadingTimer = false;
                         }
                     );
                 }
@@ -488,5 +519,38 @@ export class ContestDetailComponent {
         this.timer = interval(1000).subscribe(() => {
             this.remainingTime = this.timerService.calculateRemainingTime(start, duration);
         });
+    }
+
+    durationLess() {
+        if (this.duration > 5) {
+            this.duration -= 5;
+        }
+    }
+
+    durationMore() {
+        if (this.duration < 120) {
+            this.duration += 5;
+        }
+    }
+
+    createTimer() {
+        let currentRound = this.contestDetailResponseBody.data.currentRound;
+
+        let contestTimerNewRequest: ContestTimerNewRequest = {
+            contestId: this.contestId,
+            round: currentRound,
+            duration: this.duration,
+        };
+
+        this.contestTimerNewService.createContestTimer(contestTimerNewRequest).subscribe(
+            (contestTimerNewResponse) => {
+                this.contestTimerNewResponseBody = contestTimerNewResponse.body!;
+
+                let start = this.contestTimerNewResponseBody.data.start;
+                let duration = this.contestTimerNewResponseBody.data.duration;
+                this.startTimer(start, duration);
+            },
+            (error) => {}
+        );
     }
 }
