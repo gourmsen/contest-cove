@@ -5,6 +5,9 @@ import { CommonModule } from "@angular/common";
 // router
 import { ActivatedRoute } from "@angular/router";
 
+// other
+import { interval, Subscription } from "rxjs";
+
 // services
 import { SharedDataService } from "../internal-services/shared-data.service";
 import { SocketService } from "../http-services/socket.service";
@@ -16,6 +19,9 @@ import { ContestAttendeeEntryListService } from "../http-services/contest-attend
 import { ContestTeamsNewService } from "../http-services/contest-teams-new.service";
 import { ContestTeamListService } from "../http-services/contest-team-list.service";
 import { ContestTeamsUpdateService } from "../http-services/contest-teams-update.service";
+import { ContestTimerDetailService } from "../http-services/contest-timer-detail.service";
+import { ContestTimerNewService } from "../http-services/contest-timer-new.service";
+import { TimerService } from "../internal-services/timer.service";
 
 // interfaces
 import { ContestDetailResponse } from "../interfaces/contest-detail-response";
@@ -29,6 +35,9 @@ import { ContestTeamsNewResponse } from "../interfaces/contest-teams-new-respons
 import { ContestTeamListResponse } from "../interfaces/contest-team-list-response";
 import { ContestTeamsUpdateRequest } from "../interfaces/contest-teams-update-request";
 import { ContestTeamsUpdateResponse } from "../interfaces/contest-teams-update-response";
+import { ContestTimerDetailResponse } from "../interfaces/contest-timer-detail-response";
+import { ContestTimerNewRequest } from "../interfaces/contest-timer-new-request";
+import { ContestTimerNewResponse } from "../interfaces/contest-timer-new-response";
 
 @Component({
     selector: "app-contest-detail",
@@ -46,14 +55,21 @@ export class ContestDetailComponent {
     contestTeamListResponseBody: ContestTeamListResponse;
     contestTeamsNewResponseBody: ContestTeamsNewResponse;
     contestTeamsUpdateResponseBody: ContestTeamsUpdateResponse;
+    contestTimerDetailResponseBody: ContestTimerDetailResponse | null;
+    contestTimerNewResponseBody: ContestTimerNewResponse;
 
     loadingAttendees: boolean;
     loadingObjectives: boolean;
     loadingEntries: boolean;
     loadingTeams: boolean;
+    loadingTimer: boolean;
 
     contestId: string;
     userId: string;
+
+    remainingTime: any[];
+    duration: number;
+    timer: Subscription;
 
     sortedAttendees: any[][] = [];
 
@@ -78,17 +94,22 @@ export class ContestDetailComponent {
         private contestAttendeeEntryListService: ContestAttendeeEntryListService,
         private contestTeamsNewService: ContestTeamsNewService,
         private contestTeamListService: ContestTeamListService,
-        private contestTeamsUpdateService: ContestTeamsUpdateService
+        private contestTeamsUpdateService: ContestTeamsUpdateService,
+        private contestTimerDetailService: ContestTimerDetailService,
+        private contestTimerNewService: ContestTimerNewService,
+        private timerService: TimerService
     ) {}
 
     ngOnInit() {
         this.contestId = this.route.snapshot.paramMap.get("contestId") || "";
+        this.duration = 45;
 
         // loading
         this.loadingAttendees = true;
         this.loadingObjectives = true;
         this.loadingEntries = true;
         this.loadingTeams = true;
+        this.loadingTimer = true;
 
         // button clicks
         this.buttonTeamUpdateClicked = false;
@@ -132,6 +153,9 @@ export class ContestDetailComponent {
                     this.contestDetailService.viewContest(this.contestId).subscribe(
                         (contestDetailResponse) => {
                             this.contestDetailResponseBody = contestDetailResponse.body!;
+
+                            // clean up timer
+                            this.contestTimerDetailResponseBody = null;
 
                             // get attendee list
                             this.loadingAttendees = true;
@@ -188,6 +212,31 @@ export class ContestDetailComponent {
                         }
                     );
                 }
+
+                if (parsedMessage.event === "contest-timer-new") {
+                    this.loadingTimer = true;
+
+                    // get round timer
+                    let currentRound = this.contestDetailResponseBody.data.currentRound;
+                    this.contestTimerDetailService.viewContestTimer(this.contestId, currentRound).subscribe(
+                        (contestTimerDetailResponse) => {
+                            this.contestTimerDetailResponseBody = contestTimerDetailResponse.body!;
+
+                            let start: string = this.contestTimerDetailResponseBody.data.start;
+                            let duration: number = this.contestTimerDetailResponseBody.data.duration;
+                            this.startTimer(start, duration);
+
+                            this.loadingTimer = false;
+                        },
+                        (error) => {
+                            if (error.status === 404) {
+                            }
+                            if (error.status === 400) {
+                            }
+                            this.loadingTimer = false;
+                        }
+                    );
+                }
             },
             (error) => {},
             () => {
@@ -207,6 +256,27 @@ export class ContestDetailComponent {
             this.contestDetailService.viewContest(this.contestId).subscribe(
                 (contestDetailResponse) => {
                     this.contestDetailResponseBody = contestDetailResponse.body!;
+
+                    // get round timer
+                    let currentRound = this.contestDetailResponseBody.data.currentRound;
+                    this.contestTimerDetailService.viewContestTimer(this.contestId, currentRound).subscribe(
+                        (contestTimerDetailResponse) => {
+                            this.contestTimerDetailResponseBody = contestTimerDetailResponse.body!;
+
+                            let start: string = this.contestTimerDetailResponseBody.data.start;
+                            let duration: number = this.contestTimerDetailResponseBody.data.duration;
+                            this.startTimer(start, duration);
+
+                            this.loadingTimer = false;
+                        },
+                        (error) => {
+                            if (error.status === 404) {
+                            }
+                            if (error.status === 400) {
+                            }
+                            this.loadingTimer = false;
+                        }
+                    );
 
                     // get attendee list
                     this.contestAttendeeListService.listContestAttendees(this.contestId).subscribe(
@@ -436,5 +506,51 @@ export class ContestDetailComponent {
         setTimeout(() => {
             this.buttonTeamUpdateClicked = false;
         }, 3000);
+    }
+
+    startTimer(start: string, duration: number) {
+        // clean up
+        if (this.timer && !this.timer.closed) {
+            this.timer.unsubscribe();
+        }
+
+        // start timer
+        this.remainingTime = this.timerService.calculateRemainingTime(start, duration);
+        this.timer = interval(1000).subscribe(() => {
+            this.remainingTime = this.timerService.calculateRemainingTime(start, duration);
+        });
+    }
+
+    durationLess() {
+        if (this.duration > 5) {
+            this.duration -= 5;
+        }
+    }
+
+    durationMore() {
+        if (this.duration < 120) {
+            this.duration += 5;
+        }
+    }
+
+    createTimer() {
+        let currentRound = this.contestDetailResponseBody.data.currentRound;
+
+        let contestTimerNewRequest: ContestTimerNewRequest = {
+            contestId: this.contestId,
+            round: currentRound,
+            duration: this.duration,
+        };
+
+        this.contestTimerNewService.createContestTimer(contestTimerNewRequest).subscribe(
+            (contestTimerNewResponse) => {
+                this.contestTimerNewResponseBody = contestTimerNewResponse.body!;
+
+                let start = this.contestTimerNewResponseBody.data.start;
+                let duration = this.contestTimerNewResponseBody.data.duration;
+                this.startTimer(start, duration);
+            },
+            (error) => {}
+        );
     }
 }
