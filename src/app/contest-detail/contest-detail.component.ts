@@ -5,6 +5,9 @@ import { CommonModule } from "@angular/common";
 // router
 import { ActivatedRoute } from "@angular/router";
 
+// other
+import { interval, Subscription } from "rxjs";
+
 // services
 import { SharedDataService } from "../internal-services/shared-data.service";
 import { SocketService } from "../http-services/socket.service";
@@ -58,9 +61,13 @@ export class ContestDetailComponent {
     loadingObjectives: boolean;
     loadingEntries: boolean;
     loadingTeams: boolean;
+    loadingTimer: boolean;
 
     contestId: string;
     userId: string;
+
+    remainingTime: any[];
+    timer: Subscription;
 
     sortedAttendees: any[][] = [];
 
@@ -99,6 +106,7 @@ export class ContestDetailComponent {
         this.loadingObjectives = true;
         this.loadingEntries = true;
         this.loadingTeams = true;
+        this.loadingTimer = true;
 
         // button clicks
         this.buttonTeamUpdateClicked = false;
@@ -226,13 +234,16 @@ export class ContestDetailComponent {
 
                             let start: string = this.contestTimerDetailResponseBody.data.start;
                             let duration: number = this.contestTimerDetailResponseBody.data.duration;
-                            this.timerService.calculateRemainingTime(start, duration);
+                            this.startTimer(start, duration);
+
+                            this.loadingTimer = false;
                         },
                         (error) => {
                             if (error.status === 404) {
                             }
                             if (error.status === 400) {
                             }
+                            this.loadingTimer = false;
                         }
                     );
 
@@ -464,5 +475,18 @@ export class ContestDetailComponent {
         setTimeout(() => {
             this.buttonTeamUpdateClicked = false;
         }, 3000);
+    }
+
+    startTimer(start: string, duration: number) {
+        // clean up
+        if (this.timer && !this.timer.closed) {
+            this.timer.unsubscribe();
+        }
+
+        // start timer
+        this.remainingTime = this.timerService.calculateRemainingTime(start, duration);
+        this.timer = interval(1000).subscribe(() => {
+            this.remainingTime = this.timerService.calculateRemainingTime(start, duration);
+        });
     }
 }

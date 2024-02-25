@@ -6,7 +6,7 @@ import { Injectable } from "@angular/core";
 export class TimerService {
     constructor() {}
 
-    calculateRemainingTime(start: string, duration: number): [number, number] {
+    calculateRemainingTime(start: string, duration: number): [boolean, number, number] {
         // get times
         let startTime: Date = new Date(start);
         let endTime: Date = new Date(startTime.getTime() + duration * 60000);
@@ -14,10 +14,19 @@ export class TimerService {
 
         // calculate difference and format
         let difference: number = endTime.getTime() - currentTime.getTime();
+
+        // check negative
+        let isNegative: boolean = false;
+        if (difference < 0) {
+            isNegative = true;
+            difference = -difference;
+        }
+
+        // get minutes and seconds
         let minutes: number = Math.floor(difference / (1000 * 60));
         let seconds: number = Math.floor((difference % (1000 * 60)) / 1000);
 
-        return [minutes, seconds];
+        return [isNegative, minutes, seconds];
     }
 
     getCurrentTime() {

@@ -1,11 +1,56 @@
 <div class="container">
     <div class="row m-1 mb-4">
-        <div class="col-12 col-sm-12">
+        <div class="col-6 col-sm-6 col-md-8 col-lg-10">
             <div class="card bg-secondary text-white">
                 <div class="card-body">
                     <h3 class="card-title text-center">{{ contestId }}</h3>
                 </div>
             </div>
+        </div>
+
+        <div class="col-6 col-sm-6 col-md-4 col-lg-2">
+            @if (!loadingTimer) {
+            @if (contestTimerDetailResponseBody) {
+            @if (remainingTime) {
+            @if (!remainingTime[0]) {
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h3 class="card-title text-center font-monospace">
+                        {{ remainingTime[1] | number:'2.0-0'}}:{{ remainingTime[2] | number:'2.0-0'}}
+                    </h3>
+                </div>
+            </div>
+            } @else {
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h3 class="card-title text-center font-monospace">
+                        {{ remainingTime[1] | number:'2.0-0'}}:{{ remainingTime[2] | number:'2.0-0'}}
+                    </h3>
+                </div>
+            </div>
+            }
+            }
+            } @else {
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h3 class="card-title text-center">
+                        <i class="fa-solid fa-stopwatch"></i>
+                    </h3>
+                </div>
+            </div>
+            }
+
+            } @else {
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h3 class="card-title text-center">
+                        <div class="spinner-grow spinner-grow-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </h3>
+                </div>
+            </div>
+            }
         </div>
     </div>
 
