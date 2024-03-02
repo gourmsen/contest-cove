@@ -190,7 +190,7 @@
                     <h5 class="card-title text-center">Live Feed</h5>
                     <hr>
 
-                    @if (contestAttendeeEntryListResponseBody) {
+                    @if (contestEntryListResponseBody) {
                     <div class="container">
                         <div class="row mb-3">
                             <div class="col-3 col-sm-3">
@@ -207,11 +207,11 @@
                             </div>
 
                             <div class="col d-flex justify-content-center align-items-center"
-                                *ngFor="let objective of contestAttendeeEntryListResponseBody.data.entries[0].values; let i = index">
+                                *ngFor="let objective of contestEntryListResponseBody.data.entries[0].values; let i = index">
                                 <span class="fw-bold text-white">{{ objective.name }}</span>
                             </div>
                         </div>
-                        <div *ngFor="let entry of contestAttendeeEntryListResponseBody.data.entries; let i = index">
+                        <div *ngFor="let entry of contestEntryListResponseBody.data.entries; let i = index">
                             <div class="row mb-2" *ngIf="i<7">
                                 <div class="col-3 col-sm-3">
                                     @if (entry.attendeeName) {
@@ -229,7 +229,7 @@
                                     <span class="text-white font-monospace">{{ entry.round }}</span>
                                 </div>
                                 <div class="col d-flex justify-content-center align-items-center"
-                                    *ngFor="let objective of contestAttendeeEntryListResponseBody.data.entries[i].values; let j = index">
+                                    *ngFor="let objective of contestEntryListResponseBody.data.entries[i].values; let j = index">
                                     <span class="text-white font-monospace">{{ objective.value }}</span>
                                 </div>
                             </div>
