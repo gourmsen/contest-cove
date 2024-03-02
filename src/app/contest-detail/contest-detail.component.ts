@@ -14,8 +14,8 @@ import { SocketService } from "../http-services/socket.service";
 import { ContestDetailService } from "../http-services/contest-detail.service";
 import { ContestAttendeeListService } from "../http-services/contest-attendee-list.service";
 import { ContestObjectiveListService } from "../http-services/contest-objective-list.service";
-import { ContestAttendeeEntryNewService } from "../http-services/contest-attendee-entry-new.service";
-import { ContestAttendeeEntryListService } from "../http-services/contest-attendee-entry-list.service";
+import { ContestEntryNewService } from "../http-services/contest-entry-new.service";
+import { ContestEntryListService } from "../http-services/contest-entry-list.service";
 import { ContestTeamsNewService } from "../http-services/contest-teams-new.service";
 import { ContestTeamListService } from "../http-services/contest-team-list.service";
 import { ContestTeamsUpdateService } from "../http-services/contest-teams-update.service";
@@ -27,9 +27,9 @@ import { TimerService } from "../internal-services/timer.service";
 import { ContestDetailResponse } from "../interfaces/contest-detail-response";
 import { ContestAttendeeListResponse } from "../interfaces/contest-attendee-list-response";
 import { ContestObjectiveListResponse } from "../interfaces/contest-objective-list-response";
-import { ContestAttendeeEntryNewRequest } from "../interfaces/contest-attendee-entry-new-request";
-import { ContestAttendeeEntryNewResponse } from "../interfaces/contest-attendee-entry-new-response";
-import { ContestAttendeeEntryListResponse } from "../interfaces/contest-attendee-entry-list-response";
+import { ContestEntryNewRequest } from "../interfaces/contest-entry-new-request";
+import { ContestEntryNewResponse } from "../interfaces/contest-entry-new-response";
+import { ContestEntryListResponse } from "../interfaces/contest-entry-list-response";
 import { ContestTeamsNewRequest } from "../interfaces/contest-teams-new-request";
 import { ContestTeamsNewResponse } from "../interfaces/contest-teams-new-response";
 import { ContestTeamListResponse } from "../interfaces/contest-team-list-response";
@@ -50,8 +50,8 @@ export class ContestDetailComponent {
     contestDetailResponseBody: ContestDetailResponse;
     contestAttendeeListResponseBody: ContestAttendeeListResponse;
     contestObjectiveListResponseBody: ContestObjectiveListResponse;
-    contestAttendeeEntryNewResponseBody: ContestAttendeeEntryNewResponse;
-    contestAttendeeEntryListResponseBody: ContestAttendeeEntryListResponse;
+    contestEntryNewResponseBody: ContestEntryNewResponse;
+    contestEntryListResponseBody: ContestEntryListResponse;
     contestTeamListResponseBody: ContestTeamListResponse;
     contestTeamsNewResponseBody: ContestTeamsNewResponse;
     contestTeamsUpdateResponseBody: ContestTeamsUpdateResponse;
@@ -90,8 +90,8 @@ export class ContestDetailComponent {
         private contestDetailService: ContestDetailService,
         private contestAttendeeListService: ContestAttendeeListService,
         private contestObjectiveListService: ContestObjectiveListService,
-        private contestAttendeeEntryNewService: ContestAttendeeEntryNewService,
-        private contestAttendeeEntryListService: ContestAttendeeEntryListService,
+        private contestEntryNewService: ContestEntryNewService,
+        private contestEntryListService: ContestEntryListService,
         private contestTeamsNewService: ContestTeamsNewService,
         private contestTeamListService: ContestTeamListService,
         private contestTeamsUpdateService: ContestTeamsUpdateService,
@@ -128,16 +128,16 @@ export class ContestDetailComponent {
                 }
 
                 if (
-                    parsedMessage.event === "contest-attendee-entry-new" ||
+                    parsedMessage.event === "contest-entry-new" ||
                     parsedMessage.event === "contest-update" ||
                     parsedMessage.event === "contest-join" ||
                     parsedMessage.event === "contest-leave"
                 ) {
                     // get contest attendee entries
                     this.loadingEntries = true;
-                    this.contestAttendeeEntryListService.listContestAttendeeEntries(this.contestId).subscribe(
-                        (contestAttendeeEntryListResponse) => {
-                            this.contestAttendeeEntryListResponseBody = contestAttendeeEntryListResponse.body!;
+                    this.contestEntryListService.listContestEntries(this.contestId).subscribe(
+                        (contestEntryListResponse) => {
+                            this.contestEntryListResponseBody = contestEntryListResponse.body!;
 
                             this.loadingEntries = false;
                         },
@@ -337,9 +337,9 @@ export class ContestDetailComponent {
         );
 
         // get contest attendee entries
-        this.contestAttendeeEntryListService.listContestAttendeeEntries(this.contestId).subscribe(
-            (contestAttendeeEntryListResponse) => {
-                this.contestAttendeeEntryListResponseBody = contestAttendeeEntryListResponse.body!;
+        this.contestEntryListService.listContestEntries(this.contestId).subscribe(
+            (contestEntryListResponse) => {
+                this.contestEntryListResponseBody = contestEntryListResponse.body!;
 
                 this.loadingEntries = false;
             },
@@ -395,15 +395,15 @@ export class ContestDetailComponent {
     }
 
     logEntry() {
-        let contestAttendeeEntryNewRequest: ContestAttendeeEntryNewRequest = {
+        let contestEntryNewRequest: ContestEntryNewRequest = {
             contestId: this.contestId,
             attendeeId: this.userId,
             values: this.entryValues,
         };
 
-        this.contestAttendeeEntryNewService.logContestEntry(contestAttendeeEntryNewRequest).subscribe(
-            (contestAttendeeEntryNewResponse) => {
-                this.contestAttendeeEntryNewResponseBody = contestAttendeeEntryNewResponse.body!;
+        this.contestEntryNewService.logContestEntry(contestEntryNewRequest).subscribe(
+            (contestEntryNewResponse) => {
+                this.contestEntryNewResponseBody = contestEntryNewResponse.body!;
             },
             (error) => {
                 if (error.status === 404) {
