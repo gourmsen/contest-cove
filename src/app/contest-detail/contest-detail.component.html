@@ -100,7 +100,7 @@
     <div class="row m-1">
 
         @if (!loadingObjectives) {
-        @if (contestObjectiveListResponseBody) {
+        @if (contestObjectiveListResponseBody && contestDetailResponseBody) {
         <div class="col-12 col-xl-6 mb-3">
             <div class="card bg-secondary text-white second-row-height">
                 <div class="card-body">
@@ -190,7 +190,7 @@
                     <h5 class="card-title text-center">Live Feed</h5>
                     <hr>
 
-                    @if (contestEntryListResponseBody) {
+                    @if (contestEntryListResponseBody && contestDetailResponseBody) {
                     <div class="container">
                         <div class="row mb-3">
                             <div class="col-3 col-sm-3">
@@ -215,7 +215,15 @@
                             <div class="row mb-2" *ngIf="i<7">
                                 <div class="col-3 col-sm-3">
                                     @if (entry.attendeeName) {
+                                    @if (entry.attendeeId === userId && contestDetailResponseBody.data.state !== "Closed") {
                                     <span class="text-white text-truncate">{{ entry.attendeeName }}</span>
+                                    <button class="btn btn-danger btn-sm text-white p-0 px-1 ms-2"
+                                        (click)="deleteEntry(entry.entryId)">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                    } @else {
+                                    <span class="text-white text-truncate">{{ entry.attendeeName }}</span>
+                                    }
                                     } @else {
                                     <span class="text-white fst-italic">Unknown</span>
                                     }
