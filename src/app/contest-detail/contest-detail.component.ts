@@ -21,6 +21,7 @@ import { ContestTeamListService } from "../http-services/contest-team-list.servi
 import { ContestTeamsUpdateService } from "../http-services/contest-teams-update.service";
 import { ContestTimerDetailService } from "../http-services/contest-timer-detail.service";
 import { ContestTimerNewService } from "../http-services/contest-timer-new.service";
+import { ContestEntryDeleteService } from "../http-services/contest-entry-delete.service";
 import { TimerService } from "../internal-services/timer.service";
 
 // interfaces
@@ -35,6 +36,7 @@ import { ContestTeamsNewResponse } from "../interfaces/contest-teams-new-respons
 import { ContestTeamListResponse } from "../interfaces/contest-team-list-response";
 import { ContestTeamsUpdateRequest } from "../interfaces/contest-teams-update-request";
 import { ContestTeamsUpdateResponse } from "../interfaces/contest-teams-update-response";
+import { ContestEntryDeleteResponse } from "../interfaces/contest-entry-delete-response";
 import { ContestTimerDetailResponse } from "../interfaces/contest-timer-detail-response";
 import { ContestTimerNewRequest } from "../interfaces/contest-timer-new-request";
 import { ContestTimerNewResponse } from "../interfaces/contest-timer-new-response";
@@ -55,6 +57,7 @@ export class ContestDetailComponent {
     contestTeamListResponseBody: ContestTeamListResponse;
     contestTeamsNewResponseBody: ContestTeamsNewResponse;
     contestTeamsUpdateResponseBody: ContestTeamsUpdateResponse;
+    contestEntryDeleteResponseBody: ContestEntryDeleteResponse;
     contestTimerDetailResponseBody: ContestTimerDetailResponse | null;
     contestTimerNewResponseBody: ContestTimerNewResponse;
 
@@ -95,6 +98,7 @@ export class ContestDetailComponent {
         private contestTeamsNewService: ContestTeamsNewService,
         private contestTeamListService: ContestTeamListService,
         private contestTeamsUpdateService: ContestTeamsUpdateService,
+        private contestEntryDeleteService: ContestEntryDeleteService,
         private contestTimerDetailService: ContestTimerDetailService,
         private contestTimerNewService: ContestTimerNewService,
         private timerService: TimerService
@@ -129,6 +133,7 @@ export class ContestDetailComponent {
 
                 if (
                     parsedMessage.event === "contest-entry-new" ||
+                    parsedMessage.event === "contest-entry-delete" ||
                     parsedMessage.event === "contest-update" ||
                     parsedMessage.event === "contest-join" ||
                     parsedMessage.event === "contest-leave"
@@ -417,6 +422,18 @@ export class ContestDetailComponent {
         }
 
         this.overallEntrySum = 0;
+    }
+
+    deleteEntry(entryId: string) {
+        this.contestEntryDeleteService.deleteContestEntry(entryId).subscribe(
+            (contestEntryDeleteResponse) => {
+                this.contestEntryDeleteResponseBody = contestEntryDeleteResponse.body!;
+            },
+            (error) => {
+                if (error.status === 404) {
+                }
+            }
+        );
     }
 
     removeTeam() {
