@@ -131,6 +131,11 @@ export class ContestDetailComponent {
                     this.isSocketConnected = true;
                 }
 
+                if (parsedMessage.event === "contest-update") {
+                    // clean up timer
+                    this.contestTimerDetailResponseBody = null;
+                }
+
                 if (
                     parsedMessage.event === "contest-entry-new" ||
                     parsedMessage.event === "contest-entry-delete" ||
@@ -158,9 +163,6 @@ export class ContestDetailComponent {
                     this.contestDetailService.viewContest(this.contestId).subscribe(
                         (contestDetailResponse) => {
                             this.contestDetailResponseBody = contestDetailResponse.body!;
-
-                            // clean up timer
-                            this.contestTimerDetailResponseBody = null;
 
                             // get attendee list
                             this.loadingAttendees = true;
