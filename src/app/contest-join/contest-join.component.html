@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="row m-1 mb-4">
+        <div class="col-12 col-sm-12">
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h3 class="card-title text-center">{{ contestId }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Join Button -->
+    <div class="row m-1">
+        <div class="col-12 col-sm-12">
+            @if (!loadingAttendees) {
+            <a class="card bg-success card-body btn fw-semibold text-white" (click)="joinContest(contestId, userId)">
+                Join
+            </a>
+            } @else {
+            <a class="card bg-secondary card-body btn fw-semibold text-white disabled">
+                <h5>Loading
+                    <div class="spinner-grow spinner-grow-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </h5>
+            </a>
+            }
+        </div>
+    </div>
+</div>
