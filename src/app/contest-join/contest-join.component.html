@@ -12,13 +12,17 @@
     <!-- Join Button -->
     <div class="row m-1">
         <div class="col-12 col-sm-12">
-            @if (isAttendee) {
-            <a class="card bg-secondary card-body btn fw-semibold text-white">
-                Joined!
+            @if (!loadingAttendees) {
+            <a class="card bg-success card-body btn fw-semibold text-white" (click)="joinContest(contestId, userId)">
+                Join
             </a>
             } @else {
-            <a class="card bg-success card-body btn fw-semibold text-white">
-                Join
+            <a class="card bg-secondary card-body btn fw-semibold text-white disabled">
+                <h5>Loading
+                    <div class="spinner-grow spinner-grow-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </h5>
             </a>
             }
         </div>
