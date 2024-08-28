@@ -96,9 +96,10 @@
         </div>
     </div>
 
-    <!-- Logging -->
+    <!-- Hot Row -->
     <div class="row m-1">
 
+        <!-- Logging -->
         @if (!loadingObjectives) {
         @if (contestObjectiveListResponseBody && contestDetailResponseBody) {
         <div class="col-12 col-xl-6 mb-3">
@@ -215,7 +216,8 @@
                             <div class="row mb-2" *ngIf="i<7">
                                 <div class="col-3 col-sm-3">
                                     @if (entry.attendeeName) {
-                                    @if (entry.attendeeId === userId && contestDetailResponseBody.data.state !== "Closed") {
+                                    @if (entry.attendeeId === userId && contestDetailResponseBody.data.state !==
+                                    "Closed") {
                                     <span class="text-white text-truncate">{{ entry.attendeeName }}</span>
                                     <button class="btn btn-danger btn-sm text-white p-0 px-1 ms-2"
                                         (click)="deleteEntry(entry.entryId)">
@@ -327,20 +329,24 @@
                                 *ngFor="let attendee of team.attendees; let k = index">
                                 @if(contestDetailResponseBody.data.authorId === userId) {
                                 @if(i === contestDetailResponseBody.data.currentRound && j) {
+                                @if(contestDetailResponseBody.data.state !== "Closed") {
                                 <button class="btn btn-secondary btn-sm text-white ms-1 me-1"
                                     (click)="moveAttendee(1, j, k)">
                                     <i class="fa-solid fa-caret-up"></i>
                                 </button>
                                 }
                                 }
+                                }
                                 <span>{{ attendee.name }}</span>
                                 @if(contestDetailResponseBody.data.authorId === userId) {
                                 @if(i === contestDetailResponseBody.data.currentRound &&
                                 j !== contestTeamListResponseBody.data.rounds[i - 1].teams.length - 1) {
+                                @if(contestDetailResponseBody.data.state !== "Closed") {
                                 <button class="btn btn-secondary btn-sm text-white ms-1 me-1"
                                     (click)="moveAttendee(0, j, k)">
                                     <i class=" fa-solid fa-caret-down"></i>
                                 </button>
+                                }
                                 }
                                 }
                             </div>
@@ -373,7 +379,7 @@
                         </div>
                     </div>
 
-
+                    @if(contestDetailResponseBody.data.state !== "Closed") {
                     <div class="d-flex justify-content-center align-items-center">
                         <!-- Remove Team -->
                         <button class="btn btn-secondary m-1 text-white" (click)="removeTeam()">
@@ -409,6 +415,7 @@
                         </button>
                         }
                     </div>
+                    }
                     }
                     }
                     } @else {
