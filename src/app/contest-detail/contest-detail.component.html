@@ -99,6 +99,9 @@
     <!-- Hot Row -->
     <div class="row m-1">
 
+        @if (contestDetailResponseBody) {
+        @if (contestDetailResponseBody.data.state !== "Closed") {
+
         <!-- Logging -->
         @if (!loadingObjectives) {
         @if (contestObjectiveListResponseBody && contestDetailResponseBody) {
@@ -266,6 +269,63 @@
                 </div>
             </div>
         </div>
+        }
+
+        } @else {
+        <!-- User Statistics -->
+        @if (contestDetailResponseBody.data.hasStatistics) {
+        <div class="d-none d-lg-block col-12 mb-3">
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h5 class="card-title text-center">User Statistics</h5>
+                    <hr>
+
+                    @if (contestStatisticsListResponseBody) {
+                    <div class="container">
+                        <div class="row mb-3">
+                            <div class="col d-flex justify-content-center align-items-center"
+                                *ngFor="let objective of statisticsObjectivePoints; let i = index">
+                                <span class="fw-bold text-white">{{ objective.name }}</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col d-flex justify-content-center align-items-center"
+                                *ngFor="let objective of statisticsObjectivePoints; let i = index">
+                                <div class="container">
+                                    <div class="row" *ngFor="let attendee of objective.values">
+                                        @if (attendee.name) {
+                                        <div class="col-8">
+                                            <p class="card-text text-truncate">
+                                                {{ attendee.name }}
+                                            </p>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <p class="card-text text-end text-truncate fw-semibold font-monospace">
+                                                {{ attendee.value }}
+                                            </p>
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+        } @else {
+        <div class="col-12 mb-3">
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h5 class="card-title text-center">No statistics, yet!</h5>
+                </div>
+            </div>
+        </div>
+        }
+        }
         }
     </div>
 
