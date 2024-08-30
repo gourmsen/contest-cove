@@ -23,6 +23,7 @@ import { ContestTimerDetailService } from "../http-services/contest-timer-detail
 import { ContestTimerNewService } from "../http-services/contest-timer-new.service";
 import { ContestEntryDeleteService } from "../http-services/contest-entry-delete.service";
 import { TimerService } from "../internal-services/timer.service";
+import { ContestStatisticsListService } from "../http-services/contest-statistics-list.service";
 
 // interfaces
 import { ContestDetailResponse } from "../interfaces/contest-detail-response";
@@ -40,6 +41,7 @@ import { ContestEntryDeleteResponse } from "../interfaces/contest-entry-delete-r
 import { ContestTimerDetailResponse } from "../interfaces/contest-timer-detail-response";
 import { ContestTimerNewRequest } from "../interfaces/contest-timer-new-request";
 import { ContestTimerNewResponse } from "../interfaces/contest-timer-new-response";
+import { ContestStatisticsListResponse } from "../interfaces/contest-statistics-list-response";
 
 @Component({
     selector: "app-contest-detail",
@@ -60,12 +62,14 @@ export class ContestDetailComponent {
     contestEntryDeleteResponseBody: ContestEntryDeleteResponse;
     contestTimerDetailResponseBody: ContestTimerDetailResponse | null;
     contestTimerNewResponseBody: ContestTimerNewResponse;
+    contestStatisticsListResponseBody: ContestStatisticsListResponse;
 
     loadingAttendees: boolean;
     loadingObjectives: boolean;
     loadingEntries: boolean;
     loadingTeams: boolean;
     loadingTimer: boolean;
+    loadingStatistics: boolean;
 
     contestId: string;
     userId: string;
@@ -75,6 +79,7 @@ export class ContestDetailComponent {
     timer: Subscription;
 
     sortedAttendees: any[][] = [];
+    statisticsObjectivePoints: any[] = [];
 
     entryValues: number[] = [];
     overallEntrySum: number = 0;
@@ -101,7 +106,8 @@ export class ContestDetailComponent {
         private contestEntryDeleteService: ContestEntryDeleteService,
         private contestTimerDetailService: ContestTimerDetailService,
         private contestTimerNewService: ContestTimerNewService,
-        private timerService: TimerService
+        private timerService: TimerService,
+        private contestStatisticsListService: ContestStatisticsListService
     ) {}
 
     ngOnInit() {
@@ -114,6 +120,7 @@ export class ContestDetailComponent {
         this.loadingEntries = true;
         this.loadingTeams = true;
         this.loadingTimer = true;
+        this.loadingStatistics = true;
 
         // button clicks
         this.buttonTeamUpdateClicked = false;
@@ -141,7 +148,8 @@ export class ContestDetailComponent {
                     parsedMessage.event === "contest-entry-delete" ||
                     parsedMessage.event === "contest-update" ||
                     parsedMessage.event === "contest-join" ||
-                    parsedMessage.event === "contest-leave"
+                    parsedMessage.event === "contest-leave" ||
+                    parsedMessage.event === "contest-statistics-refresh"
                 ) {
                     // get contest attendee entries
                     this.loadingEntries = true;
@@ -163,6 +171,21 @@ export class ContestDetailComponent {
                     this.contestDetailService.viewContest(this.contestId).subscribe(
                         (contestDetailResponse) => {
                             this.contestDetailResponseBody = contestDetailResponse.body!;
+
+                            // get attendee statistics
+                            if (this.contestDetailResponseBody.data.hasStatistics) {
+                                this.contestStatisticsListService.listContestStatistics("", this.contestId).subscribe(
+                                    (contestStatisticsListResponse) => {
+                                        this.contestStatisticsListResponseBody = contestStatisticsListResponse.body!;
+                                        this.sortByObjectivePoints();
+
+                                        this.loadingStatistics = false;
+                                    },
+                                    (error) => {
+                                        this.loadingStatistics = false;
+                                    }
+                                );
+                            }
 
                             // get attendee list
                             this.loadingAttendees = true;
@@ -284,6 +307,21 @@ export class ContestDetailComponent {
                             this.loadingTimer = false;
                         }
                     );
+
+                    // get attendee statistics
+                    if (this.contestDetailResponseBody.data.hasStatistics) {
+                        this.contestStatisticsListService.listContestStatistics("", this.contestId).subscribe(
+                            (contestStatisticsListResponse) => {
+                                this.contestStatisticsListResponseBody = contestStatisticsListResponse.body!;
+                                this.sortByObjectivePoints();
+
+                                this.loadingStatistics = false;
+                            },
+                            (error) => {
+                                this.loadingStatistics = false;
+                            }
+                        );
+                    }
 
                     // get attendee list
                     this.contestAttendeeListService.listContestAttendees(this.contestId).subscribe(
@@ -571,5 +609,37 @@ export class ContestDetailComponent {
             },
             (error) => {}
         );
+    }
+
+    sortByObjectivePoints() {
+        let attendees = this.contestStatisticsListResponseBody.data;
+
+        // get each objective
+        for (let i = 0; i < attendees[0].objectives.length; i++) {
+            let attendeeList: any[] = [];
+
+            // get each attendee
+            for (let j = 0; j < attendees.length; j++) {
+                let pointsData = {
+                    name: attendees[j].attendee.name,
+                    value: Math.round((attendees[j].objectives[i].values[0] * 100) / 100),
+                };
+
+                attendeeList.push(pointsData);
+            }
+
+            // sort attendees based on points value
+            attendeeList.sort((a: any, b: any) => {
+                return b.value - a.value;
+            });
+
+            let objectiveData = {
+                name: attendees[0].objectives[i].name,
+                values: attendeeList,
+            };
+
+            // fill objective
+            this.statisticsObjectivePoints.push(objectiveData);
+        }
     }
 }
