@@ -172,6 +172,21 @@ export class ContestDetailComponent {
                         (contestDetailResponse) => {
                             this.contestDetailResponseBody = contestDetailResponse.body!;
 
+                            // get attendee statistics
+                            if (this.contestDetailResponseBody.data.hasStatistics) {
+                                this.contestStatisticsListService.listContestStatistics("", this.contestId).subscribe(
+                                    (contestStatisticsListResponse) => {
+                                        this.contestStatisticsListResponseBody = contestStatisticsListResponse.body!;
+                                        this.sortByObjectivePoints();
+
+                                        this.loadingStatistics = false;
+                                    },
+                                    (error) => {
+                                        this.loadingStatistics = false;
+                                    }
+                                );
+                            }
+
                             // get attendee list
                             this.loadingAttendees = true;
                             this.contestAttendeeListService.listContestAttendees(this.contestId).subscribe(
