@@ -8,6 +8,9 @@ import { ContestStatisticsListService } from "../http-services/contest-statistic
 // interfaces
 import { ContestStatisticsListResponse } from "../interfaces/contest-statistics-list-response";
 
+// other
+import typeFilters from "../../assets/type-filters.json";
+
 @Component({
     selector: "app-leaderboard",
     standalone: true,
@@ -26,30 +29,16 @@ export class LeaderboardComponent {
     statisticsPoints: any[] = [];
     statisticsObjectivePoints: any[] = [];
 
-    constructor(
-        private contestStatisticsListService: ContestStatisticsListService
-    ) {}
+    typeFilters = typeFilters.filters;
+    currentTypeFilter = {
+        display: "All",
+        value: "",
+    };
+
+    constructor(private contestStatisticsListService: ContestStatisticsListService) {}
 
     ngOnInit() {
-        this.loadingMedals = true;
-        this.loadingPoints = true;
-        this.loadingObjectivePoints = true;
-
-        // get statistics list
-        this.contestStatisticsListService.listContestStatistics().subscribe(
-            (contestStatisticsListResponse) => {
-                this.contestStatisticsListResponseBody =
-                    contestStatisticsListResponse.body!;
-
-                this.sortByMedals();
-                this.loadingMedals = false;
-                this.sortByPoints();
-                this.loadingPoints = false;
-                this.sortByObjectivePoints();
-                this.loadingObjectivePoints = false;
-            },
-            (error) => {}
-        );
+        this.getStatistics();
     }
 
     sortByMedals() {
@@ -128,9 +117,7 @@ export class LeaderboardComponent {
                 for (let k = 0; k < attendees.length; k++) {
                     let pointsData = {
                         name: attendees[k].attendee.name,
-                        value: Math.round(
-                            (attendees[k].objectives[i].values[j] * 100) / 100
-                        ),
+                        value: Math.round((attendees[k].objectives[i].values[j] * 100) / 100),
                     };
 
                     attendeeList.push(pointsData);
@@ -152,5 +139,38 @@ export class LeaderboardComponent {
             // fill objective
             this.statisticsObjectivePoints.push(objectiveData);
         }
+    }
+
+    getStatistics() {
+        // set loading
+        this.loadingMedals = true;
+        this.loadingPoints = true;
+        this.loadingObjectivePoints = true;
+
+        // initialize statistics
+        this.statisticsMedals = [];
+        this.statisticsPoints = [];
+        this.statisticsObjectivePoints = [];
+
+        // get statistics list
+        this.contestStatisticsListService.listContestStatistics(this.currentTypeFilter.value).subscribe(
+            (contestStatisticsListResponse) => {
+                this.contestStatisticsListResponseBody = contestStatisticsListResponse.body!;
+
+                this.sortByMedals();
+                this.loadingMedals = false;
+                this.sortByPoints();
+                this.loadingPoints = false;
+                this.sortByObjectivePoints();
+                this.loadingObjectivePoints = false;
+            },
+            (error) => {}
+        );
+    }
+
+    changeTypeFilter(type: any) {
+        this.currentTypeFilter = type;
+
+        this.getStatistics();
     }
 }

@@ -3,7 +3,29 @@
         <div class="col-12 col-sm-12">
             <div class="card bg-secondary text-white">
                 <div class="card-body">
-                    <h3 class="card-title text-center">Leaderboard</h3>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-8">
+                                <h3 class="card-title text-start">Leaderboard</h3>
+                            </div>
+                            <div class="col-4 d-flex justify-content-end">
+                                <!-- Type Filter -->
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        {{ currentTypeFilter.display }}
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li *ngFor="let type of typeFilters">
+                                            <a class="dropdown-item" (click)="changeTypeFilter(type)">
+                                                {{ type.display }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
