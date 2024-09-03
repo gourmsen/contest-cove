@@ -383,7 +383,7 @@
                         <div class="row"
                             *ngFor="let team of contestTeamListResponseBody.data.rounds[i - 1].teams; let j = index">
                             <div class="d-flex justify-content-center align-items-center mb-3">
-                                <span class="text-white fw-semibold">Team {{ j + 1}}</span>
+                                <span class="text-white fw-semibold">Team {{ j + 1}} - ({{ team.points }})</span>
                             </div>
                             <div class="d-flex justify-content-center align-items-center"
                                 *ngFor="let attendee of team.attendees; let k = index">
